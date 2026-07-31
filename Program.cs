@@ -1,7 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCustomSwagger();
+
+// Configure for Postgres
+var connectionString = DataUtility.GetConnectionString(builder.Configuration);
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
