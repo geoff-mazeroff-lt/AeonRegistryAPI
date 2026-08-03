@@ -26,6 +26,9 @@ If the directory does not exist on your machine, remove the `<UserSecretsId>` el
 ### Scaffolding the database
 Run `dotnet ef database update` to apply the migrations to the new (or existing) database.
 
+## User management
+This project leverages ASP.NET Identity to handle authentication and authorization. The user information is stored as part of the Postgres DB. The API makes use of built-in endpoints to interact with accounts.
+
 ## Running the project
 Run `dotnet restore` then `dotnet run`.
 
