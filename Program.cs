@@ -1,3 +1,4 @@
+using AeonRegistryAPI.Endpoints.Home;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,16 +22,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles(); // needed for images
 
-app.MapGet("/api/welcome", () =>
-    {
-        var response = new
-        {
-            Message = "Welcome to the Aeon Registry API", 
-            Version = "1.0.0",
-            TimeOnly = DateTime.Now.ToString("T")
-        };
-        return Results.Ok(response);
-    })
-    .WithName("WelcomeMessage");
+app.MapHomeEndpoints();
 
 app.Run();
