@@ -1,4 +1,5 @@
 using AeonRegistryAPI.Endpoints.Home;
+using AeonRegistryAPI.Middleware;
 using AeonRegistryAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles(); // needed for images
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<BlockIdentityEndpoints>();
 
 // Map API endpoints for login, logout, etc. using ASP.NET identity
 var authRouteGroup = app.MapGroup("/api/auth")

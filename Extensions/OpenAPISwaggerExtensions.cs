@@ -43,7 +43,30 @@ public static class OpenApiSwaggerExtensions
                     Description = "Enter 'Bearer' [space] and then your token in the text input below."
                  }
              );
+             
             c.AddSecurityRequirement(document => new() { [new OpenApiSecuritySchemeReference("Bearer", document)] = []});
+
+            // Note there is no `/` prefix.
+            string[] endPointsToHide = [
+                "api/auth/register",
+                "api/auth/refresh",
+                "api/auth/confirmemail",
+                "api/auth/resendconfirmationemail",
+                "api/auth/forgotpassword",
+                "api/auth/resetpassword",
+                "api/auth/manage",
+                "api/auth/manage/info",
+                "api/auth/manage/2fa"
+            ];
+            
+            c.DocInclusionPredicate((docName, description) =>
+            {
+                var path = description.RelativePath?.ToLowerInvariant();
+                if (path is null)
+                    return false;
+                
+                return !endPointsToHide.Contains(path, StringComparer.OrdinalIgnoreCase);
+            });
         });
         
         return services;
