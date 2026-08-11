@@ -1,7 +1,10 @@
+using AeonRegistryAPI.Endpoints.CustomIdentity;
 using AeonRegistryAPI.Endpoints.Home;
 using AeonRegistryAPI.Middleware;
 using AeonRegistryAPI.Models;
+using AeonRegistryAPI.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +26,9 @@ builder.Services.AddIdentityApiEndpoints<ApplicationUser>(options =>
 // Admin policy
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+
+// Configure email
+builder.Services.AddTransient<IEmailSender, ConsoleEmailService>();
 
 // Enable validation for incoming DTOs
 builder.Services.AddValidation();
@@ -50,5 +56,6 @@ authRouteGroup.MapIdentityApi<ApplicationUser>();
 
 // Map custom endpoints
 app.MapHomeEndpoints();
+app.MapCustomIdentityEndpoints();
 
 app.Run();
