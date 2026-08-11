@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
 using AeonRegistryAPI.Endpoints.CustomIdentity.Models;
 using AeonRegistryAPI.Models;
 using Microsoft.AspNetCore.Identity;
@@ -35,6 +36,14 @@ public static class CustomIdentityEndpoints
             .WithDescription("The user provides an email to request a password reset token")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
+
+        group.MapGet("/manage-profile", GetProfileInfo)
+            .WithName("GetProfileInfo")
+            .WithSummary("Gets the current user's profile")
+            .WithDescription("Gets the current's user profile")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
         
         return route;
     }
@@ -148,5 +157,26 @@ public static class CustomIdentityEndpoints
         }
         
         return Results.Ok(new { Message = $"A password reset link was sent to {request.Email}" });
+    }
+
+    private static async Task<IResult> GetProfileInfo(ClaimsPrincipal principal,
+        UserManager<ApplicationUser> userManager)
+    {
+        var currentUser = await userManager.GetUserAsync(principal);
+        if (currentUser is null)
+        {
+            return Results.NotFound(new { Message = "No user found" });
+        }
+
+        var profileResponse = new UserProfileResponse
+        {
+            Id = currentUser.Id,
+            Email = currentUser.Email,
+            FirstName = currentUser.FirstName,
+            LastName = currentUser.LastName,
+            FullName = currentUser.FullName,
+        };
+        
+        return Results.Ok(profileResponse);
     }
 }
