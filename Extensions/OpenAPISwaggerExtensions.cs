@@ -46,6 +46,9 @@ public static class OpenApiSwaggerExtensions
              
             c.AddSecurityRequirement(document => new() { [new OpenApiSecuritySchemeReference("Bearer", document)] = []});
 
+            // We have to hide the out-of-the-box endpoints because we're customizing how we work with ASP.NET Identity.
+            // CustomIdentityEndpoints defines other endpoints with slightly different names (e.g., reset-password
+            // instead of resetpassword) so we can still provide that functionality.
             // Note there is no `/` prefix.
             string[] endPointsToHide = [
                 "api/auth/register",
