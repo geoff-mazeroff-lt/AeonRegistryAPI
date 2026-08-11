@@ -29,6 +29,13 @@ Run `dotnet ef database update` to apply the migrations to the new (or existing)
 ## User management
 This project leverages ASP.NET Identity to handle authentication and authorization. The user information is stored as part of the Postgres DB. The API makes use of built-in endpoints to interact with accounts.
 
+From the Swagger interface, use `/api/auth/register-admin` to create a user. As long as the user doesn't already exist, it will be created with a temporary password that's hard-coded (see `CustomIdentityEndpoints.cs`). That user will also be assigned the role of `Researcher` (if said role exists).
+
+**Warnings:** There are some elements from the Udemy video I typed verbatim that are inconsistent. Maybe these will be addressed in future segments.
+- Why is the endpoint called `register-admin`? Is it to register a new administrator, or is it only supposed to be called by an administrator?
+- Registering a user writes the content of a would-be email to the new user, and that content contains a password reset link. Perhaps the presenter included this to show how you would start setting it up, but the link and reset token **do nothing**.
+- `register-admin` assigns a `Researcher` role, but I'm not sure how that gets created or what it does.
+
 ## Running the project
 Run `dotnet restore` then `dotnet run`.
 
