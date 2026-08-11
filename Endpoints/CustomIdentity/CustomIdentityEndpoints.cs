@@ -17,7 +17,7 @@ public static class CustomIdentityEndpoints
 
         group.MapPost("/register-admin", RegisterUser)
             .WithName("RegisterAdmin")
-            .WithSummary("Register a User")
+            .WithSummary("Registers a new user")
             .WithDescription("Registers a user; must have admin role")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
@@ -26,6 +26,13 @@ public static class CustomIdentityEndpoints
             .WithName("ResetPassword")
             .WithSummary("Resets a user's password")
             .WithDescription("Resets a user's password")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest);
+        
+        group.MapPost("/forgot-password", ForgotPassword)
+            .WithName("ForgotPassword")
+            .WithSummary("Initiates the flow for when a user forgets their password")
+            .WithDescription("The user provides an email to request a password reset token")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
         
@@ -53,7 +60,7 @@ public static class CustomIdentityEndpoints
         
         // Note: This must meet the password requirements.
         // In a real system, you'd generate this.
-        var tempPassword = "TempPassword123!"; 
+        const string tempPassword = "TempPassword123!"; 
         var result = await userManager.CreateAsync(user, tempPassword);
         var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(user);
         var encodedResetToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(passwordResetToken));
@@ -114,5 +121,32 @@ public static class CustomIdentityEndpoints
         }
         
         return Results.Ok(new { Message = "Successfully reset password" });
+    }
+
+    private static async Task<IResult> ForgotPassword(ForgotPasswordRequest request,
+        UserManager<ApplicationUser> userManager,
+        IEmailSender emailSender,
+        IConfiguration configuration)
+    {
+        if (string.IsNullOrEmpty(request.Email))
+        {
+            return Results.BadRequest(new { Message = "No email provided" });
+        }
+
+        var targetUser = await userManager.FindByEmailAsync(request.Email);
+        if (targetUser is not null)
+        {
+            var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(targetUser);
+            var encodedResetToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(passwordResetToken));
+            
+            var baseUrl = configuration["BaseUrl"] ?? "https://localhost:7132";
+            await emailSender.SendEmailAsync(request.Email, "Aeon Registry Password Reset",
+                $"""
+                 Please reset your password by visiting: 
+                 {baseUrl}/ResetPassword.html?email={request.Email}&resetCode={encodedResetToken}
+                 """);
+        }
+        
+        return Results.Ok(new { Message = $"A password reset link was sent to {request.Email}" });
     }
 }
