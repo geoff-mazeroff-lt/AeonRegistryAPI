@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace AeonRegistryAPI.Endpoints.CustomIdentity;
 
@@ -41,7 +42,7 @@ public static class CustomIdentityEndpoints
             .WithName("GetProfileInfo")
             .WithSummary("Gets the current user's profile")
             .WithDescription("Gets the current's user profile")
-            .Produces(StatusCodes.Status200OK)
+            .Produces<UserProfileResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization();
@@ -53,6 +54,14 @@ public static class CustomIdentityEndpoints
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
+        
+        group.MapGet("/manage/users", GetAllUsers)
+            .WithName("GetAllUsers")
+            .WithSummary("Gets all users")
+            .WithDescription("Gets all users")
+            .Produces<IEnumerable<UserProfileResponse>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization();
         
         return route;
@@ -215,5 +224,20 @@ public static class CustomIdentityEndpoints
         }
 
         return Results.Ok(new { Message = "Successfully updated profile" });
+    }
+
+    private static async Task<IResult> GetAllUsers(UserManager<ApplicationUser> userManager)
+    {
+        var allUsers = await userManager.Users
+            .Select(u => new UserProfileResponse
+            {
+                Id = u.Id,
+                Email = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                FullName = u.FullName
+            }).ToListAsync();
+        
+        return Results.Ok(allUsers);
     }
 }
