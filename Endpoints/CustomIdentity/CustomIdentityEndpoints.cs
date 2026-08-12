@@ -42,6 +42,16 @@ public static class CustomIdentityEndpoints
             .WithSummary("Gets the current user's profile")
             .WithDescription("Gets the current's user profile")
             .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
+        
+        group.MapPut("/manage-profile", UpdateProfileInfo)
+            .WithName("UpdateProfileInfo")
+            .WithSummary("Updates the current user's profile")
+            .WithDescription("Updates the current's user profile")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization();
         
@@ -178,5 +188,32 @@ public static class CustomIdentityEndpoints
         };
         
         return Results.Ok(profileResponse);
+    }
+
+    private static async Task<IResult> UpdateProfileInfo(UpdateUserProfileRequest request,
+        ClaimsPrincipal principal,
+        UserManager<ApplicationUser> userManager)
+    {
+        if (string.IsNullOrEmpty(request.FirstName) || string.IsNullOrEmpty(request.LastName))
+        {
+            return Results.BadRequest(new { Message = "Please fill all the required fields" });
+        }
+        
+        var currentUser = await userManager.GetUserAsync(principal);
+        if (currentUser is null)
+        {
+            return Results.NotFound(new { Message = "No user found" });
+        }
+        
+        currentUser.FirstName  = request.FirstName;
+        currentUser.LastName  = request.LastName;
+        
+        var updateResult = await userManager.UpdateAsync(currentUser);
+        if (!updateResult.Succeeded)
+        {
+            return Results.BadRequest(updateResult.Errors.Select(e => e.Description));
+        }
+
+        return Results.Ok(new { Message = "Successfully updated profile" });
     }
 }
