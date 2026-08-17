@@ -9,7 +9,7 @@ public class Site
     [Required, MaxLength(200)]
     public string? Name { get; set; }
     
-    [Required, MaxLength(100)]
+    [Required, MaxLength(500)]
     public string? Location { get; set; }
     
     [MaxLength(100)]
@@ -19,7 +19,7 @@ public class Site
     
     public double Longitude { get; set; }
     
-    [MaxLength(100)]
+    [MaxLength(500)]
     public string? Description { get; set; }
     
     [MaxLength(2000)]

@@ -1,0 +1,89 @@
+[
+  {
+    "ArtifactCatalogNumber": "GOB-001",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-04-10",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Stone pillar infused with metallic veins emits continuous low-frequency hum.",
+        "Created": "2023-04-10T12:10:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Acoustic signature correlates with unexplained 'Taos Hum' phenomenon, logged since the 1990s.",
+        "Created": "2023-04-11T08:45:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "GOB-002",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-04-22",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Crystal lenses project layered holographic glyphs when aligned with sunlight.",
+        "Created": "2023-04-22T14:20:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Projections observed by locals in 2018, misattributed to UFO activity near Şanlıurfa.",
+        "Created": "2023-04-23T09:15:00Z"
+      },
+      {
+        "Author": "admin@aeon.org",
+        "Content": "Cover story maintained: 'light refraction through sandstone.' Classified as minor incident.",
+        "Created": "2023-04-23T16:00:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "GOB-003",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Verified",
+    "DateSubmitted": "2023-05-05",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Vault seal responds to harmonic tones rather than mechanical force. Partial unlocking achieved.",
+        "Created": "2023-05-05T10:45:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Seismic readings during test align with tremors preceding 1999 Izmit earthquake. Civilian attribution remains tectonic fault slip.",
+        "Created": "2023-05-06T09:20:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "GOB-004",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-05-15",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Core fragment emits trace radiation signatures inconsistent with regional geology.",
+        "Created": "2023-05-15T13:10:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Signature spike recorded near Chernobyl prior to 1986 reactor failure. Possible correlation.",
+        "Created": "2023-05-16T08:30:00Z"
+      },
+      {
+        "Author": "admin@aeon.org",
+        "Content": "All Chernobyl links suppressed from public record. Core fragment remains under containment.",
+        "Created": "2023-05-16T19:00:00Z"
+      }
+    ]
+  }
+]
+

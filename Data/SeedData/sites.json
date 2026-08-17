@@ -1,0 +1,79 @@
+[
+  {
+    "Id": 1,
+    "Name": "Mid-Atlantic Ridge AZ-01",
+    "Location": "Mid-Atlantic Ridge, near the Azores Islands",
+    "Latitude": 38.7169,
+    "Longitude": -27.2206,
+    "Coordinates": "38.7169° N, 27.2206° W",
+    "Description": "An undersea formation on the Mid-Atlantic Ridge with steep vertical ridges and columnar structures showing anomalous resistance to erosion.",
+    "PublicNarrative": "Though occasionally associated with the legend of Atlantis, scientific consensus dismisses such claims. Geological surveys confirm the Mid-Atlantic Ridge formations are the result of standard volcanic and tectonic activity.",
+    "AeonNarrative": "Internally designated 'Atlantis Central Spire,' this site is the surviving hub of an Atlantean city. Aeon maintains a concealed deep-ocean station above it, extracting artifacts and studying crystalline energy nodes. Cover narratives were seeded in geology journals to reinforce the 'myth' narrative. The Spire is the keystone of the Aeon web, with every other site linking back to this Atlantean core."
+  },
+  {
+    "Id": 2,
+    "Name": "Richat Structure RQ-07",
+    "Location": "Richat Structure (Eye of the Sahara), Mauritania",
+    "Latitude": 21.1245,
+    "Longitude": -11.3953,
+    "Coordinates": "21.1245° N, 11.3953° W",
+    "Description": "A circular geological formation composed of ringed ridges visible from orbit, showing signs of deep subsurface voids.",
+    "PublicNarrative": "Popularly nicknamed the ‘Eye of the Sahara,’ some have speculated about lost cities beneath the structure. Geological studies, however, identify it as a natural erosion feature formed by uplift and wind activity over millions of years.",
+    "AeonNarrative": "Internally designated 'Sahara Subterranean Chamber,' the concentric rings hide entrances to Atlantean vaults. Aeon’s desert hub provides excavation access to preserved tech caches. The site ties into global flood myths; Aeon suspects misuse of Atlantean climate systems triggered the Younger Dryas catastrophe that birthed these legends."
+  },
+  {
+    "Id": 3,
+    "Name": "Nazca Plateau NP-14",
+    "Location": "Nazca Plateau, Peru",
+    "Latitude": -14.7390,
+    "Longitude": -75.1300,
+    "Coordinates": "14.7390° S, 75.1300° W",
+    "Description": "A plateau region marked by massive geoglyphs etched into desert soil, preserved by arid climate and altitude.",
+    "PublicNarrative": "The Nazca Plateau is often subject to theories about ancient civilizations or extraterrestrial influence due to its geoglyphs. Archaeologists attribute the lines and nearby formations to cultural practices of the Nazca people, with no evidence of advanced technology.",
+    "AeonNarrative": "Internally designated 'Andean Sky Vault,' the site sits above vault energy fields linked to celestial alignments. Aeon maintains a disguised aerial survey base. Pop culture 'ancient alien' theories were deliberately encouraged by Aeon to bury the Atlantean connection under ridicule."
+  },
+  {
+    "Id": 4,
+    "Name": "Lake Vostok V-22",
+    "Location": "Lake Vostok Region, East Antarctica",
+    "Latitude": -78.4640,
+    "Longitude": 106.8330,
+    "Coordinates": "78.4640° S, 106.8330° E",
+    "Description": "A polar research zone above Lake Vostok, a subglacial lake sealed beneath several kilometers of ice, hosting multiple science outposts.",
+    "PublicNarrative": "Speculation persists about hidden civilizations beneath Antarctica’s ice sheets. Scientific drilling near Lake Vostok has found only microbial life and typical glacial formations, with no evidence supporting extraordinary claims.",
+    "AeonNarrative": "Internally designated 'Antarctic Abyssal Archive,' the site revealed Atlantean spires preserved in ice. A black orb recovered here emitted weather-disruptive energy beams, fueling Aeon’s belief that Atlantean climate control technology caused the ancient Flood myths. Aeon seeded fabricated microbial findings to protect the truth."
+  },
+  {
+    "Id": 5,
+    "Name": "Göbekli Tepe GT-03",
+    "Location": "Şanlıurfa Province, Southeastern Turkey",
+    "Latitude": 37.2231,
+    "Longitude": 38.9226,
+    "Coordinates": "37.2231° N, 38.9226° E",
+    "Description": "A megalithic site consisting of concentric enclosures and T-shaped pillars carved with symbolic reliefs.",
+    "PublicNarrative": "Due to its age, Göbekli Tepe has fueled speculation about forgotten advanced societies. Archaeological consensus, however, identifies it as a ritual site built by early agrarian communities without evidence of unknown technology.",
+    "AeonNarrative": "Internally designated 'Göbekli Subsurface Vault,' scans confirm machinery beneath the megaliths. Aeon covertly funds official digs, ensuring the 'temple' narrative dominates. The pillars suggest Atlantean influence spread across Eurasia, reinforcing Aeon’s theory that Atlantis seeded multiple outposts worldwide."
+  },
+  {
+    "Id": 6,
+    "Name": "Yonaguni Formation YN-05",
+    "Location": "Yonaguni Island, Okinawa Prefecture, Japan",
+    "Latitude": 24.4458,
+    "Longitude": 122.9336,
+    "Coordinates": "24.4458° N, 122.9336° E",
+    "Description": "A submerged stepped formation resembling terraces and platforms, located off the southern coast of Yonaguni Island.",
+    "PublicNarrative": "Some divers claim the Yonaguni structures are remnants of an ancient city. Marine geologists, however, classify them as natural sandstone formations shaped by currents and tectonic fractures.",
+    "AeonNarrative": "Internally designated 'Yonaguni Monument,' the structure conceals crystalline conduits linking to a submerged Atlantean outpost. Aeon fueled debates in the 1980s to establish the 'natural formation' consensus. The site is linked to Pacific myths of Lemuria/Mu, which Aeon interprets as Atlantean colonies."
+  },
+  {
+    "Id": 7,
+    "Name": "Mount Kailash MK-11",
+    "Location": "Tibet Autonomous Region, Himalayas, China",
+    "Latitude": 31.0675,
+    "Longitude": 81.3119,
+    "Coordinates": "31.0675° N, 81.3119° E",
+    "Description": "A peak in the Transhimalaya mountain range, known for its symmetrical shape and religious significance.",
+    "PublicNarrative": "Legends occasionally link Mount Kailash to lost civilizations or hidden structures. Authorities note, however, that the mountain is sacred to multiple faiths and climbing is strictly prohibited out of cultural respect. Geological surveys classify it as a natural peak with no evidence of artificial construction.",
+    "AeonNarrative": "Internally designated ‘Mount Kailash Research Enclave,’ the site is shielded by religious taboos originally seeded by Aeon to deter exploration. Deep resonance scans indicate a pre-Atlantean structure buried within the mountain. Aeon deliberately sustains myths of ‘hollow earth’ and sacred inviolability to deflect attention while using Kailash as a keystone hub for monitoring anomalies across Eurasia."
+  }
+]

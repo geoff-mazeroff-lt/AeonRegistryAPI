@@ -1,0 +1,94 @@
+[
+  {
+    "ArtifactCatalogNumber": "YON-001",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-03-15",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Beacon activated spontaneously during seismic tremor. Broadcast frequency recorded at 36 kHz.",
+        "Created": "2023-03-15T14:20:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Transmission overlaps with foreshocks preceding 2011 Tōhoku earthquake. Emissions appear to precede tsunami wavefront by 3 minutes.",
+        "Created": "2023-03-16T09:00:00Z"
+      },
+      {
+        "Author": "admin@aeon.org",
+        "Content": "All links to 2011 disaster suppressed. Beacon classified Tier-1 monitoring priority.",
+        "Created": "2023-03-17T12:45:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "YON-002",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Verified",
+    "DateSubmitted": "2023-03-28",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Pressure core regulates structural stability under extreme depths. Still functional at partial capacity.",
+        "Created": "2023-03-28T10:00:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Failure logs mirror unexplained loss of USS Scorpion (SSN-589), 1968. Official Navy cause: torpedo malfunction.",
+        "Created": "2023-03-29T07:50:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "YON-003",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-04-10",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Dock node anchors submersibles to ancient conduit shafts. Reactivated during Aeon dive ops.",
+        "Created": "2023-04-10T12:25:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Sonar anomalies misinterpreted by Japanese Navy as unauthorized Chinese submarine incursion, 2001.",
+        "Created": "2023-04-11T08:20:00Z"
+      },
+      {
+        "Author": "admin@aeon.org",
+        "Content": "Cover maintained as 'false sonar contact.' Node remains under Aeon jurisdiction.",
+        "Created": "2023-04-11T17:00:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "YON-004",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-04-20",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Resonator emits ultrasonic pulses mapping subsurface chambers. Detected across Pacific basin.",
+        "Created": "2023-04-20T13:40:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Pulse signatures coincide with mass whale strandings in Pacific (notably 2004 New Zealand event).",
+        "Created": "2023-04-21T09:10:00Z"
+      },
+      {
+        "Author": "admin@aeon.org",
+        "Content": "Civilian attribution maintained as 'naval sonar interference.' Whale correlation suppressed.",
+        "Created": "2023-04-21T18:00:00Z"
+      }
+    ]
+  }
+]
+

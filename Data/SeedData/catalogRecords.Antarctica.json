@@ -1,0 +1,84 @@
+[
+  {
+    "ArtifactCatalogNumber": "ANT-001",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Verified",
+    "DateSubmitted": "2023-05-13",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Orb discharged vertical beam upon exposure. Atmospheric disruption recorded within hours.",
+        "Created": "2023-05-13T10:15:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Event correlated with anomalous cyclone tracks following 2010 Chile earthquake. Weather attribution maintained as natural El Niño variation.",
+        "Created": "2023-05-14T08:00:00Z"
+      },
+      {
+        "Author": "admin@aeon.org",
+        "Content": "Directive: all orb-related weather incidents classified Tier-1 hazard. Civilian agencies remain uninformed.",
+        "Created": "2023-05-15T09:30:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "ANT-002",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-05-25",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Fragment pulses synchronized with auroral activity. Glow visible in lab containment.",
+        "Created": "2023-05-25T13:20:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Pulse pattern identical to aurora anomalies logged during October 2003 geomagnetic storm.",
+        "Created": "2023-05-26T09:00:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "ANT-003",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-06-05",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Metallic pylons align with magnetic field lines. Generated continental-scale resonance model.",
+        "Created": "2023-06-05T11:10:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Array activation signatures coincide with 2002 Larsen B ice shelf collapse. Public cause remains 'climate change.'",
+        "Created": "2023-06-06T07:45:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "ANT-004",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-06-20",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Inscribed tablet unlocks glyphs only below −10°C. Inscriptions glow under cryogenic scan.",
+        "Created": "2023-06-20T16:15:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Luminescence first observed during 1958 International Geophysical Year Antarctic survey. Records expunged.",
+        "Created": "2023-06-21T09:30:00Z"
+      }
+    ]
+  }
+]
+

@@ -1,0 +1,79 @@
+[
+  {
+    "ArtifactCatalogNumber": "AND-001",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Verified",
+    "DateSubmitted": "2023-06-16",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Solar Harp resonates with sunlight, generating measurable EM output.",
+        "Created": "2023-06-16T10:30:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Output spike aligns with 1989 Quebec blackout attributed to geomagnetic storm.",
+        "Created": "2023-06-17T09:00:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "AND-002",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-06-30",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Auric Gauntlet produces localized energy shield. Field stable for ~11 seconds.",
+        "Created": "2023-06-30T12:00:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Shield resonance anomalies observed near disappearance of Chilean Air Force jet, 2019.",
+        "Created": "2023-07-01T07:45:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "AND-003",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-07-10",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Sky Vault Conduit emits pulses every 24 hours. Pulses generate electromagnetic anomalies.",
+        "Created": "2023-07-10T14:15:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Anomalies coincide with enhanced Nazca geoglyph visibility during satellite overflights.",
+        "Created": "2023-07-11T09:50:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "AND-004",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-07-28",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Featherstone Relic manipulates local gravity when oriented along east-west axis.",
+        "Created": "2023-07-28T12:40:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Gravitational anomalies match unexplained Bolivian mine collapse in 1995.",
+        "Created": "2023-07-29T08:30:00Z"
+      }
+    ]
+  }
+]
+

@@ -1,0 +1,94 @@
+[
+  {
+    "ArtifactCatalogNumber": "KAI-001",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Verified",
+    "DateSubmitted": "2023-02-05",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Crystal vibrates at multiple frequencies simultaneously. Resonance peaks align with solar storms.",
+        "Created": "2023-02-05T11:00:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Pulses match cosmic radiation spike during 1962 geomagnetic storm. Civilian attribution: solar flare.",
+        "Created": "2023-02-06T08:40:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "KAI-002",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-02-18",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Staff generates standing wave vibrations in solid rock. Rock samples fractured under resonance stress.",
+        "Created": "2023-02-18T14:15:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Seismic signatures align with April 2015 Nepal earthquake foreshocks.",
+        "Created": "2023-02-19T07:55:00Z"
+      },
+      {
+        "Author": "admin@aeon.org",
+        "Content": "Directive: resonance testing restricted to subterranean labs only. Civilian seismology data infiltration ongoing.",
+        "Created": "2023-02-19T16:20:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "KAI-003",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-03-02",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Gate Key pulses at irregular intervals. Patterns resemble coded transmission.",
+        "Created": "2023-03-02T12:10:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Pulses match 'Wow! Signal' anomaly recorded in 1977 by Ohio State Radio Observatory.",
+        "Created": "2023-03-03T09:15:00Z"
+      },
+      {
+        "Author": "admin@aeon.org",
+        "Content": "All astronomical data linking Key to SETI programs suppressed. Classified under Aeon Protocol Sigma.",
+        "Created": "2023-03-03T17:30:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "KAI-004",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Verified",
+    "DateSubmitted": "2023-03-18",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Metal plate etched with shifting constellations. Alignments only visible during rare celestial events.",
+        "Created": "2023-03-18T13:40:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Plate accurately predicted August 11, 1999 solar eclipse with 100% precision.",
+        "Created": "2023-03-19T09:00:00Z"
+      },
+      {
+        "Author": "admin@aeon.org",
+        "Content": "Public eclipse prediction attributed to astronomy community. Aeon references to artifact removed.",
+        "Created": "2023-03-19T16:25:00Z"
+      }
+    ]
+  }
+]
+

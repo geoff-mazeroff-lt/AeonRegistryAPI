@@ -1,0 +1,79 @@
+[
+  {
+    "ArtifactCatalogNumber": "SAH-001",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Verified",
+    "DateSubmitted": "2023-06-21",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Obsidian Lens projects star maps under direct light. Constellations differ from modern skies.",
+        "Created": "2023-06-21T12:15:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Constellation map overlaps Göbekli Tepe carvings. Suggests networked knowledge system.",
+        "Created": "2023-06-22T09:20:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "SAH-002",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-07-02",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Crystal Array reassembled. Beam produced burned silica traces on chamber wall.",
+        "Created": "2023-07-02T11:00:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Beam signatures consistent with battlefield anomalies during Gulf War, 1991.",
+        "Created": "2023-07-03T08:30:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "SAH-003",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Draft",
+    "DateSubmitted": "2023-07-19",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Echo Sphere generates shifting audio in extinct languages.",
+        "Created": "2023-07-19T13:30:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Frequencies overlap with the 1977 'Southern TV broadcast hijacking' in the UK.",
+        "Created": "2023-07-20T08:10:00Z"
+      }
+    ]
+  },
+  {
+    "ArtifactCatalogNumber": "SAH-004",
+    "SubmittedBy": "researcher@aeon.org",
+    "VerifiedBy": "archivist@aeon.org",
+    "Status": "Verified",
+    "DateSubmitted": "2023-08-01",
+    "Notes": [
+      {
+        "Author": "researcher@aeon.org",
+        "Content": "Sand Veil Generator test produced EMP disabling Aeon drones.",
+        "Created": "2023-08-01T09:10:00Z"
+      },
+      {
+        "Author": "archivist@aeon.org",
+        "Content": "Pulse signatures match unexplained avionics failure in Metrojet Flight 9268 (2015).",
+        "Created": "2023-08-02T12:40:00Z"
+      }
+    ]
+  }
+]
+

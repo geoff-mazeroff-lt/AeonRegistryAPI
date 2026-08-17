@@ -16,6 +16,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         base.OnModelCreating(builder);
         
+        // ApplicationUser has two collections that are of type CatalogRecord. EF cannot disambiguate
+        // what foreign key (user ID) goes with which collection, so we have to be explicit here.
+        //
+        // The default deletion behavior is "cascade", and we want to prevent deleting catalog records if
+        // a user is deleted.
         builder.Entity<CatalogRecord>()
             .HasOne(cr => cr.SubmittedBy)
             .WithMany(u => u.SubmittedCatalogRecords)

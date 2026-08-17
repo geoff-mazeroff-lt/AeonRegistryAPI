@@ -1,0 +1,260 @@
+[
+  {
+    "Name": "Aegis Core",
+    "CatalogNumber": "ATL-001",
+    "Description": "Field Note – Dr. Lysandra Vane, 2023-07-15: The crystal was still humming when we uncovered it from the vault’s sediment casing. Each pulse coincided with a drop in our equipment’s voltage, as if it were feeding on the very act of observation. The inner lattice remains in motion, self-stabilizing against our containment fields. It feels... alive, aware of its confinement.",
+    "PublicNarrative": "Clear quartz-like crystal enclosed within a carved stone frame recovered from site ATL. Laboratory tests show the specimen to be of unknown origin, notable for its high clarity and symmetrical facets. Likely a ritual or ornamental centerpiece used in ceremonial contexts.",
+    "DateDiscovered": "2023-07-15",
+    "Type": "EnergySource",
+    "SiteId": 1
+  },
+  {
+    "Name": "Chrono Dial",
+    "CatalogNumber": "ATL-002",
+    "Description": "Field Note – Researcher E. Maren, 2023-08-01: The dial resists our attempts to halt its rotation once activated. When spun, the outer rings align in ways that mirror temporal drift patterns seen in deep-space observations. Several interns reported vertigo and temporal disorientation during proximity exposure. Recommend limiting handling to five minutes or less.",
+    "PublicNarrative": "Circular bronze instrument composed of multiple interlocking rings engraved with astronomical motifs. The craftsmanship suggests advanced metallurgical knowledge. Possibly an ancient navigational or calendrical device.",
+    "DateDiscovered": "2023-08-01",
+    "Type": "Machine",
+    "SiteId": 1
+  },
+  {
+    "Name": "Starlight Compass",
+    "CatalogNumber": "ATL-003",
+    "Description": "Field Note – Expedition Log 14, 2023-09-10: The device activates under starlight, projecting constellations unrecorded in any terrestrial catalog. When positioned near the Aegis Core, the projections rearrange themselves, suggesting a shared origin or control network. The compass needle moves independently of magnetic influence, guided instead by something celestial.",
+    "PublicNarrative": "Compact brass compass recovered from the upper chambers of site ATL. The instrument features delicate inlay work and a rotating dial etched with stellar patterns. Presumed to have served as a symbolic or navigational object.",
+    "DateDiscovered": "2023-09-10",
+    "Type": "Tool",
+    "SiteId": 1
+  },
+  {
+    "Name": "Seal Key",
+    "CatalogNumber": "ATL-004",
+    "Description": "Field Note – Archive 3-A, 2023-09-25: Unearthed at the lowest level of the Spire. The inscriptions shift subtly under direct observation. When struck against stone, a subsonic tone reverberates through surrounding structures. It responds to the Aegis Core’s resonance, possibly serving as a means of access or control within the deeper ruins.",
+    "PublicNarrative": "Bronze rod with forked end and spiral engravings, recovered from the lower strata of site ATL. Similar artifacts found in nearby chambers suggest it functioned as a ceremonial staff or architectural fitting.",
+    "DateDiscovered": "2023-09-25",
+    "Type": "Tool",
+    "SiteId": 1
+  },
+
+  {
+    "Name": "Obsidian Lens",
+    "CatalogNumber": "SAH-001",
+    "Description": "Field Note – Dr. H. Nadir, 2023-06-20: The sphere hummed faintly when sunlight struck its surface, sending visible ripples through the sand. Instruments recorded a brief drop in barometric pressure within a ten-meter radius. The object appears to modulate acoustic frequencies through its own mass, though no internal cavity exists. Recommend limiting daylight exposure until shielding protocols improve.",
+    "PublicNarrative": "Highly polished black stone sphere recovered from site SAH in the western Sahara. The object’s perfect symmetry and reflective surface suggest it may have served as an ornamental or ceremonial piece. Minor surface abrasions indicate long exposure within shifting dunes.",
+    "DateDiscovered": "2023-06-20",
+    "Type": "CommunicationDevice",
+    "SiteId": 2
+  },
+  {
+    "Name": "Sand Veil Generator",
+    "CatalogNumber": "SAH-004",
+    "Description": "Field Note – Engineer T. Kadesh, 2023-08-01: Recovered half-buried near the collapsed entrance to Chamber E. When powered via external induction, the device expelled a localized storm front—microscale lightning, high static density, and particulate lift lasting six minutes. Core temperature reached 600 °C before burnout. Internal components resemble no known power architecture.",
+    "PublicNarrative": "Metallic apparatus discovered partially buried near the primary chamber of site SAH. The device exhibits complex venting and gear mechanisms, suggesting a function related to airflow or environmental control. Its craftsmanship indicates a high degree of mechanical proficiency for the period.",
+    "DateDiscovered": "2023-08-01",
+    "Type": "Machine",
+    "SiteId": 2
+  },
+  {
+    "Name": "Echo Sphere",
+    "CatalogNumber": "SAH-003",
+    "Description": "Field Note – Researcher D. Al-Farid, 2023-07-19: When placed within the chamber’s center, the disk emitted harmonic tones that echoed our spoken words seconds later—altered, as if translated. The glyphs along its rim shimmered in rhythm with each vocalization. Acoustic tests suggest the material itself resonates at a sub-audible frequency, creating self-sustaining feedback loops.",
+    "PublicNarrative": "Flat polished disk of dark mineral composition recovered from the central hall of site SAH. Etched inscriptions and acoustic wear suggest it may have been used in sound-based ritual practices or as a resonance plate for communication or music.",
+    "DateDiscovered": "2023-07-19",
+    "Type": "CommunicationDevice",
+    "SiteId": 2
+  },
+  {
+    "Name": "Crystal Shard Array",
+    "CatalogNumber": "SAH-002",
+    "Description": "Field Note – Dr. V. Selim, 2023-07-02: Cluster recovered intact within a sealed chamber, still emitting coherent light bands in the infrared spectrum. Exposure caused magnetometer drift across the entire site grid. Array orientation implies it once served as a focused emitter, though the initiating signal remains unknown.",
+    "PublicNarrative": "Cluster of clear mineral prisms recovered from an enclosed vault at site SAH. Each shard displays precise geometric alignment and optical clarity. Likely assembled as a decorative or ritual focal object utilizing natural light dispersion.",
+    "DateDiscovered": "2023-07-02",
+    "Type": "Weapon",
+    "SiteId": 2
+  },
+
+  {
+    "Name": "Solar Harp",
+    "CatalogNumber": "AND-001",
+    "Description": "Field Note – Dr. R. Calder, 2023-06-15: Strings still vibrate under direct sunlight, producing harmonics long after excitation ends. The instrument seems to tune itself when exposed to full spectrum light, adjusting pitch in ways that correspond to solar flares logged by Aeon Station-3. The resonance field extends nearly two meters. Do not touch without shielding gloves.",
+    "PublicNarrative": "Bronze stringed instrument recovered from the Andean ridge excavation (site AND). Crafted from a single cast frame with fine metallic filaments resembling strings. Likely a ceremonial lyre or symbolic musical object associated with solar worship traditions.",
+    "DateDiscovered": "2023-06-15",
+    "Type": "EnergySource",
+    "SiteId": 3
+  },
+  {
+    "Name": "Auric Gauntlet",
+    "CatalogNumber": "AND-002",
+    "Description": "Field Note – Operative L. Avero, 2023-06-30: Found upright, fingers extended as if shielding against impact. When first contact was made, a translucent field shimmered around the unit before collapsing. Radiation sensors spiked for 3.2 seconds, then normalized. Composition includes a gold-titanium alloy unknown in pre-industrial contexts.",
+    "PublicNarrative": "Gilded arm guard uncovered within a sealed Andean chamber. The artifact displays advanced metal-working techniques and complex joint articulation. Believed to have served as a high-status ceremonial piece or protective armor element.",
+    "DateDiscovered": "2023-06-30",
+    "Type": "Weapon",
+    "SiteId": 3
+  },
+  {
+    "Name": "Sky Vault Conduit",
+    "CatalogNumber": "AND-003",
+    "Description": "Field Note – Engineer H. Mora, 2023-07-10: Column emitted vertical photonic discharge upon excavation, lasting fourteen minutes. The energy signature matches frequency traces from the Sahara arrays. Carvings depict a pattern identical to the Aegis lattice found months earlier. We’ve relocated the pillar to containment for continuous monitoring.",
+    "PublicNarrative": "Cylindrical stone pillar carved with geometric motifs, recovered from the upper plateau of site AND. The surface shows traces of mineral vitrification, possibly the result of lightning strikes. Thought to be a ritual marker or alignment monument.",
+    "DateDiscovered": "2023-07-10",
+    "Type": "Machine",
+    "SiteId": 3
+  },
+  {
+    "Name": "Featherstone Relic",
+    "CatalogNumber": "AND-004",
+    "Description": "Field Note – Dr. S. Ichara, 2023-07-28: The plate levitated briefly when exposed to magnetic field testing. Its underside shows micro-channel etchings that redirect electromagnetic flow. When oriented toward the Sky Vault Conduit, the artifact remained suspended for 19 seconds before discharge. We have no explanation for the counter-gravitic behavior.",
+    "PublicNarrative": "Rectangular metallic plate featuring engraved feather motifs, discovered near the vault entrance at site AND. Constructed from a lightweight alloy and highly polished. Presumed decorative element symbolizing avian deities common to regional cultures.",
+    "DateDiscovered": "2023-07-28",
+    "Type": "Tool",
+    "SiteId": 3
+  },
+
+  {
+    "Name": "Black Orb",
+    "CatalogNumber": "ANT-001",
+    "Description": "Field Note – Dr. E. Rahman, 2023-05-12: The sphere was recovered intact from Chamber C beneath the Vostok ridge. During thaw sequence, a vertical beam of white light erupted, ionizing the air and disabling equipment within a 40-meter radius. Exposure lasted twelve seconds. Surface temperature fell instantly to –41 °C. The object now emits a continuous 4 Hz vibration detectable only through contact microphones.",
+    "PublicNarrative": "Polished metallic sphere retrieved from a sealed ice chamber near Lake Vostok. The artifact’s seamless exterior and unusual density have prompted metallurgical study. It is displayed under controlled temperature to prevent surface oxidation.",
+    "DateDiscovered": "2023-05-12",
+    "Type": "Unknown",
+    "SiteId": 4
+  },
+  {
+    "Name": "Frost Spire Fragment",
+    "CatalogNumber": "ANT-002",
+    "Description": "Field Note – Technician R. Tallis, 2023-05-25: Found embedded vertically in ice layer 14A. Emits rhythmic luminescence synchronized with auroral activity. Attempted extraction caused audible resonance similar to low-frequency humming. Material resists thermal change and tool penetration. Microscopy shows lattice alignment beyond any known crystalline order.",
+    "PublicNarrative": "Large translucent crystal fragment unearthed from deep ice core. Displays internal refraction and self-illumination under certain atmospheric conditions. Current studies explore possible photoluminescent mineral origins.",
+    "DateDiscovered": "2023-05-25",
+    "Type": "EnergySource",
+    "SiteId": 4
+  },
+  {
+    "Name": "Polar Resonance Array",
+    "CatalogNumber": "ANT-003",
+    "Description": "Field Note – Eng. L. Sato, 2023-06-05: Six metallic pylons arranged in a precise circle. When powered sensors approached, the structures produced synchronized magnetic pulses at 0.83 Hz. Harmonic feedback aligned with global field drift. After two hours the array continued emitting residual energy without external input. Recommend containment within Faraday vault.",
+    "PublicNarrative": "Set of six metal columns discovered beneath compacted glacial strata. Their arrangement suggests a ceremonial or observational purpose. Composed of alloy exhibiting unusual magnetic stability.",
+    "DateDiscovered": "2023-06-05",
+    "Type": "Machine",
+    "SiteId": 4
+  },
+  {
+    "Name": "Cryo Codex",
+    "CatalogNumber": "ANT-004",
+    "Description": "Field Note – Dr. M. Koenig, 2023-06-20: Retrieved from compartment adjacent to the Resonance Array. Tablet inscriptions become visible only below –20 °C, shifting configurations after each freeze cycle. Optical scans reveal layered script etched at differing depths. Hypothesis: adaptive data matrix using temperature as cipher key.",
+    "PublicNarrative": "Rectangular alloy tablet bearing shallow engravings. Under low-temperature lighting, portions of the design fluoresce faintly blue. Believed to represent early symbolic writing or coded notation.",
+    "DateDiscovered": "2023-06-20",
+    "Type": "Tool",
+    "SiteId": 4
+  },
+
+  {
+    "Name": "Pillar Conduit",
+    "CatalogNumber": "GOB-001",
+    "Description": "Field Note – Dr. I. Havel, 2023-04-10: Primary pillar uncovered along east ridge alignment. During nocturnal survey, ground sensors detected repeating low-band vibrations localized to the column base. Frequency rose during regional tremor at 02:14 hrs. Core drilling halted after instruments recorded internal echo with measurable delay—possible hollow cavity or resonance chamber.",
+    "PublicNarrative": "Carved limestone pillar displaying interlocking geometric motifs. Tool marks suggest remarkable precision for its estimated Neolithic origin. Oriented toward true north, likely serving ritual or astronomical functions.",
+    "DateDiscovered": "2023-04-10",
+    "Type": "EnergySource",
+    "SiteId": 5
+  },
+  {
+    "Name": "Glyph Lens Array",
+    "CatalogNumber": "GOB-002",
+    "Description": "Field Note – Analyst C. Nemea, 2023-04-22: Array of seven quartz lenses positioned on carved cradle stone. When exposed to sunlight, each lens projected narrow beams forming moving geometric glyphs on the chamber wall. Alignment shifted with solar angle, producing repeating cycles every 24 minutes. No binding material or residue found—lenses appear to hover microscopically above their mounts.",
+    "PublicNarrative": "Cluster of crystal lenses arranged on a sculpted stone base. Optical clarity and curvature indicate advanced craftsmanship. Thought to have been part of a primitive astronomical or surveying device.",
+    "DateDiscovered": "2023-04-22",
+    "Type": "Tool",
+    "SiteId": 5
+  },
+  {
+    "Name": "Deep Vault Seal",
+    "CatalogNumber": "GOB-003",
+    "Description": "Field Note – Eng. D. Kallus, 2023-05-05: Retrieved intact from collapsed passage. When excited with 130 Hz acoustic tone, outer ring rotated 0.9 cm before locking again. No visible mechanism or lubrication traces. Internal structure conducts vibration differently across quadrants, implying tuned cavities within. Possible acoustic key system for chamber access.",
+    "PublicNarrative": "Circular sandstone seal carved with stylized fauna. Believed to have served as a ritual closure for a subterranean vault. Displays exceptional preservation of surface reliefs.",
+    "DateDiscovered": "2023-05-05",
+    "Type": "Machine",
+    "SiteId": 5
+  },
+  {
+    "Name": "Embedded Core Fragment",
+    "CatalogNumber": "GOB-004",
+    "Description": "Field Note – Dr. A. Lehn, 2023-05-15: Metallic inclusion extracted from within Pillar 7B. When removed from matrix, temperature rose by 6 °C over ten minutes without energy source. Radiation survey shows repeating pulse every 88 minutes matching geomagnetic oscillation. Stone surrounding the core exhibits vitrification. Recommend isolation pending further stability tests.",
+    "PublicNarrative": "Small metallic fragment discovered fused inside a carved monolith. Exhibits smooth internal surface and high reflectivity. Likely incorporated unintentionally during stone formation or used as structural reinforcement.",
+    "DateDiscovered": "2023-05-15",
+    "Type": "Unknown",
+    "SiteId": 5
+  },
+  {
+    "Name": "Abyssal Gateway Disk",
+    "CatalogNumber": "YON-001",
+    "Description": "Field Note – Diver M. Izanaka, 2024-03-12: Located embedded within basalt shelf at 47m depth. The disk began pulsing faint blue light upon first contact. Radiation readings normal, but sonar interference increased sharply within a 10m radius. The inner rings rotate independently under applied current, though the material remains unidentified. Recommend isolation from other conductive samples.",
+    "PublicNarrative": "Circular metallic disk recovered from the submerged Yonaguni formation. Features concentric channels and recessed lenses that appear to have served a decorative or symbolic purpose. Believed to be part of an ancient maritime monument or navigational marker.",
+    "DateDiscovered": "2024-03-12",
+    "Type": "Machine",
+    "SiteId": 6
+  },
+  {
+    "Name": "Tidal Seal",
+    "CatalogNumber": "YON-002",
+    "Description": "Field Note – Dr. S. Minoura, 2024-03-18: Found half-buried in silt near the main trench. Glyphs ignited with steady bioluminescent light upon exposure to diver lamps. The seal vibrates faintly with incoming tides—frequency matches the local current shift cycles. Suggests tidal resonance function, possibly energy harvesting. Marked active zone; observation only.",
+    "PublicNarrative": "Stone disc inscribed with concentric writing, retrieved from nearshore sediment at Yonaguni. The markings bear resemblance to early Pacific pictographs and appear to have been filled with phosphorescent mineral deposits. Possibly a ritual or boundary marker.",
+    "DateDiscovered": "2024-03-18",
+    "Type": "EnergySource",
+    "SiteId": 6
+  },
+  {
+    "Name": "Coral Obelisk",
+    "CatalogNumber": "YON-003",
+    "Description": "Field Note – Research Diver L. Chen, 2024-04-02: Vertical column overgrown with coral, yet script beneath remains luminescent. Text cycles through sequences every two minutes—no clear linguistic structure. Luminance persists after physical scraping. Seawater conductivity increases slightly in proximity; likely self-sustaining energy loop. Site under continuous sonar scan.",
+    "PublicNarrative": "Stone pillar partially encrusted with coral, discovered standing upright on the Yonaguni shelf. The structure bears shallow engravings that glow faintly underwater, likely caused by trapped bioluminescent algae or mineral oxidation. Considered part of a larger submerged cultural site.",
+    "DateDiscovered": "2024-04-02",
+    "Type": "Monolith",
+    "SiteId": 6
+  },
+  {
+    "Name": "Oceanic Gyrosphere",
+    "CatalogNumber": "YON-004",
+    "Description": "Field Note – Engineer V. Ramas, 2024-04-18: Found resting atop a square plinth within collapsed stairway structure. When rotated, inner core maintains orientation against current flow. Emits weak magnetic field consistent with earlier Atlantean finds. Structure suggests stabilization or alignment device—possible control element for broader submerged array.",
+    "PublicNarrative": "Bronze alloy sphere encased within intersecting rings, recovered from the Yonaguni ruins. The craftsmanship implies a functional design, though its exact use remains unknown. It may have served as a maritime instrument for navigation or ceremonial observation.",
+    "DateDiscovered": "2024-04-18",
+    "Type": "Tool",
+    "SiteId": 6
+  },
+
+  {
+    "Name": "Solar Resonance Staff",
+    "CatalogNumber": "KAI-001",
+    "Description": "Field Note – Dr. E. Vass, 2024-06-11: Found embedded vertically in basalt shelf at sunrise. Upon initial exposure, concentric waves of light rippled outward across the stone surface for forty-three seconds. Metallic composition is bronze-like but non-ferromagnetic. Staff maintains perfect vertical orientation even under force. Measured temperature differential between shaft and surrounding stone remains constant at +3°C.",
+    "PublicNarrative": "A tall bronze shaft discovered at a high-altitude plateau site. The base is fitted precisely into carved bedrock, suggesting deliberate placement for ceremonial or astronomical alignment. The artifact exhibits a faint reflective glow under sunlight, believed to result from surface oxidation.",
+    "DateDiscovered": "2024-06-11",
+    "Type": "Tool",
+    "SiteId": 7
+  },
+  {
+    "Name": "Azure Key",
+    "CatalogNumber": "KAI-002",
+    "Description": "Field Note – Technician J. Alder, 2024-06-13: Recovered from crevice near central ridge. Handle core emits stable blue luminescence when held, intensity varying with heart rate. Internal lattice shows microcapillary structure—possibly liquid conduction channels. Fits neither any known lock nor mechanical interface. Cross-reference with Aeon vault schematics recommended.",
+    "PublicNarrative": "A small bronze-and-crystal artifact shaped like a ceremonial key. The shaft contains faint blue inclusions beneath a cracked enamel coating. Likely a symbolic object or ritual token associated with access or initiation rites.",
+    "DateDiscovered": "2024-06-13",
+    "Type": "Device",
+    "SiteId": 7
+  },
+  {
+    "Name": "Celestial Disc",
+    "CatalogNumber": "KAI-003",
+    "Description": "Field Note – Astrophysicist R. Morel, 2024-06-19: Unearthed near ridge summit at night. When oriented skyward, the etched constellations illuminate to match real-time stellar positions. The disc synchronizes with magnetic north automatically. Recorded minor static discharge during star alignment at 23:42 local time. Stored in insulated containment pending further testing.",
+    "PublicNarrative": "Circular bronze plate engraved with a detailed star chart. The constellations correspond closely to current northern-hemisphere formations. Likely served as an ancient astronomical instrument for navigation or celestial observation.",
+    "DateDiscovered": "2024-06-19",
+    "Type": "Device",
+    "SiteId": 7
+  },
+  {
+    "Name": "Prismatic Obelisk",
+    "CatalogNumber": "KAI-004",
+    "Description": "Field Note – Dr. S. Leclerc, 2024-06-22: Crystal pillar discovered protruding from granite ridge. When sunlight passes through, refracted spectra shift toward ultraviolet—visible to instruments but not naked eye. Emits harmonic resonance audible only through Aeon acoustic array. Similar readings to Atlantean lattice fragments; possible shared energy principle.",
+    "PublicNarrative": "Tall quartz-like crystal formation located near the upper excavation terrace. The artifact refracts light into distinct color bands and shows minor piezoelectric response under stress. Believed to have served decorative or ritual significance.",
+    "DateDiscovered": "2024-06-22",
+    "Type": "EnergySource",
+    "SiteId": 7
+  }
+]
+
