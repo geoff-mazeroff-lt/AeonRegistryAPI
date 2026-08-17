@@ -1,18 +1,20 @@
 using AeonRegistryAPI.Endpoints.CustomIdentity;
 using AeonRegistryAPI.Endpoints.Home;
+using AeonRegistryAPI.Endpoints.Sites;
 using AeonRegistryAPI.Middleware;
 using AeonRegistryAPI.Models;
 using AeonRegistryAPI.Services;
+using AeonRegistryAPI.Services.Site;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
+// -- Builder section: set up services and configurations --------------
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddCustomSwagger();
 
-// Configure for Postgres
+// Configure EF for Postgres
 var connectionString = DataUtility.GetConnectionString(builder.Configuration);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 
@@ -33,9 +35,12 @@ builder.Services.AddTransient<IEmailSender, ConsoleEmailService>();
 // Enable validation for incoming DTOs
 builder.Services.AddValidation();
 
+// Custom services
+builder.Services.AddScoped<ISiteService, SiteService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// -- App section: set up middleware pipeline and handle HTTP requests -------------
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -62,5 +67,6 @@ authRouteGroup.MapIdentityApi<ApplicationUser>();
 // Map custom endpoints
 app.MapHomeEndpoints();
 app.MapCustomIdentityEndpoints();
+app.MapSiteEndpoints();
 
 app.Run();

@@ -43,6 +43,9 @@ From the Swagger interface, use `/api/auth/register-admin` to create a user. As 
 ### Forgot password
 From the Swagger interface, use `/api/auth/forgot-password` to initiate the password reset flow. The password reset token is written to the console, which can then be used with `/api/auth/reset-password`.
 
+## Seed data
+On startup a seed utility will run migrations to ensure the DB is current, then check if the database is empty. If it's empty example data will be populated (see `Data/SeedData/`).
+
 ## Running the project
 Run `dotnet restore` then `dotnet run`.
 
