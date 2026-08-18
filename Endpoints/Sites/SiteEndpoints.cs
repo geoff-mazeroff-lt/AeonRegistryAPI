@@ -19,7 +19,16 @@ public static class SiteEndpoints
             .WithName("GetAllPublicSites")
             .Produces<IEnumerable<PublicSiteResponse>>()
             .WithSummary("Get all sites (public)")
-            .WithDescription("Get all sites with their public data only");
+            .WithDescription("Get all sites with their public data only")
+            .AllowAnonymous();
+        
+        publicGroup.MapGet("/{id:int}", GetPublicSiteByIdAsync)
+            .WithName("GetPublicSiteById")
+            .Produces<PublicSiteResponse>()
+            .Produces(StatusCodes.Status404NotFound)
+            .WithSummary("Get site by ID (public)")
+            .WithDescription("Get a site by ID with its public data only")
+            .AllowAnonymous();
 
         return route;
     }
@@ -28,5 +37,14 @@ public static class SiteEndpoints
         CancellationToken cancellationToken)
     {
         return TypedResults.Ok(await service.GetAllPublicSitesAsync(cancellationToken));
+    }
+
+    private static async Task<Results<Ok<PublicSiteResponse>, NotFound>> GetPublicSiteByIdAsync(
+        int id,
+        ISiteService service,
+        CancellationToken cancellationToken)
+    {
+        var site = await service.GetPublicSiteByIdAsync(id, cancellationToken);
+        return site is null ? TypedResults.NotFound() : TypedResults.Ok(site);
     }
 }
