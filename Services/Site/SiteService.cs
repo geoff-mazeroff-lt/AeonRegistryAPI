@@ -40,4 +40,23 @@ public class SiteService(ApplicationDbContext db) : ISiteService
             })
             .FirstOrDefaultAsync(cancellationToken);
     }
+
+    public async Task<IEnumerable<PrivateSiteResponse>> GetAllPrivateSitesAsync(CancellationToken cancellationToken)
+    {
+        return await db.Sites
+            .AsNoTracking()
+            .Select(site => new PrivateSiteResponse
+            {
+                Id = site.Id,
+                Name = site.Name,
+                Location = site.Location,
+                Coordinates = site.Coordinates,
+                Latitude = site.Latitude,
+                Longitude = site.Longitude,
+                Description = site.Description,
+                PublicNarrative = site.PublicNarrative,
+                AeonNarrative = site.AeonNarrative
+            })
+            .ToListAsync(cancellationToken);
+    }
 }
