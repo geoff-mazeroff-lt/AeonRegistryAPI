@@ -1,4 +1,6 @@
-﻿namespace AeonRegistryAPI.Services.Site;
+﻿using AeonRegistryAPI.Models.Request;
+
+namespace AeonRegistryAPI.Services.Site;
 
 public interface ISiteService
 {
@@ -9,4 +11,6 @@ public interface ISiteService
     Task<IEnumerable<PrivateSiteResponse>> GetAllPrivateSitesAsync(CancellationToken cancellationToken);
     
     Task<PrivateSiteResponse?> GetPrivateSiteByIdAsync(int siteId, CancellationToken cancellationToken);
+    
+    Task<PrivateSiteResponse> CreateSiteAsync(CreateSiteRequest request, CancellationToken cancellationToken);
 }

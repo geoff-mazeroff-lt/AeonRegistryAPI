@@ -1,4 +1,5 @@
 ﻿using AeonRegistryAPI.Filters;
+using AeonRegistryAPI.Models.Request;
 using AeonRegistryAPI.Services.Site;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -43,15 +44,24 @@ public static class SiteEndpoints
             .Produces(StatusCodes.Status401Unauthorized)
             .WithSummary("Get all sites (private)")
             .WithDescription("Get all sites with their public and private data");
-        
+
         privateGroup.MapGet("/{id:int}", GetPrivateSiteByIdAsync)
             .WithName("GetPrivateSiteById")
             .Produces<PrivateSiteResponse>()
+            .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status404NotFound)
             .WithSummary("Get site by ID (public and private)")
-            .WithDescription("Get a site by ID with its public and private data")
-            .AllowAnonymous();
+            .WithDescription("Get a site by ID with its public and private data");
 
+        privateGroup.MapPost("", CreatePrivateSiteAsync)
+            .WithName("CreatePrivateSite")
+            .Accepts<CreateSiteRequest>("application/json")
+            .Produces<PrivateSiteResponse>(StatusCodes.Status201Created)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .ProducesValidationProblem()
+            .WithSummary("Create a new site")
+            .WithDescription("Create a new site and return its details");
+        
         return route;
     }
     
@@ -83,5 +93,12 @@ public static class SiteEndpoints
     {
         var site = await service.GetPrivateSiteByIdAsync(id, cancellationToken);
         return site is null ? TypedResults.NotFound() : TypedResults.Ok(site);
+    }
+
+    private static async Task<Results<Created<PrivateSiteResponse>, ValidationProblem>> CreatePrivateSiteAsync(
+        CreateSiteRequest request, ISiteService service, CancellationToken cancellationToken)
+    {
+        var createdSite = await service.CreateSiteAsync(request, cancellationToken);
+        return TypedResults.Created($"/api/private/sites/{createdSite.Id}", createdSite);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AeonRegistryAPI.Models.Request;
+using Microsoft.EntityFrameworkCore;
 
 namespace AeonRegistryAPI.Services.Site;
 
@@ -78,5 +79,37 @@ public class SiteService(ApplicationDbContext db) : ISiteService
                 AeonNarrative = site.AeonNarrative
             })
             .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<PrivateSiteResponse> CreateSiteAsync(CreateSiteRequest request,
+        CancellationToken cancellationToken)
+    {
+        var site = new Models.Site
+        {
+            Name = request.Name,
+            Location = request.Location,
+            Coordinates = request.Coordinates,
+            Latitude = request.Latitude,
+            Longitude = request.Longitude,
+            Description = request.Description,
+            PublicNarrative = request.PublicNarrative,
+            AeonNarrative = request.AeonNarrative
+        };
+        
+        db.Sites.Add(site);
+        await db.SaveChangesAsync(cancellationToken);
+
+        return new PrivateSiteResponse
+        {
+            Id = site.Id,
+            Name = site.Name,
+            Location = site.Location,
+            Coordinates = site.Coordinates,
+            Latitude = site.Latitude,
+            Longitude = site.Longitude,
+            Description = site.Description,
+            PublicNarrative = site.PublicNarrative,
+            AeonNarrative = site.AeonNarrative
+        };
     }
 }
