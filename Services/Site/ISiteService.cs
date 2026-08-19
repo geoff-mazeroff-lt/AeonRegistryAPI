@@ -7,4 +7,6 @@ public interface ISiteService
     Task<PublicSiteResponse?> GetPublicSiteByIdAsync(int siteId, CancellationToken cancellationToken);
     
     Task<IEnumerable<PrivateSiteResponse>> GetAllPrivateSitesAsync(CancellationToken cancellationToken);
+    
+    Task<PrivateSiteResponse?> GetPrivateSiteByIdAsync(int siteId, CancellationToken cancellationToken);
 }

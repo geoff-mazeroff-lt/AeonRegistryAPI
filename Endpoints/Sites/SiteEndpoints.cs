@@ -43,6 +43,14 @@ public static class SiteEndpoints
             .Produces(StatusCodes.Status401Unauthorized)
             .WithSummary("Get all sites (private)")
             .WithDescription("Get all sites with their public and private data");
+        
+        privateGroup.MapGet("/{id:int}", GetPrivateSiteByIdAsync)
+            .WithName("GetPrivateSiteById")
+            .Produces<PrivateSiteResponse>()
+            .Produces(StatusCodes.Status404NotFound)
+            .WithSummary("Get site by ID (public and private)")
+            .WithDescription("Get a site by ID with its public and private data")
+            .AllowAnonymous();
 
         return route;
     }
@@ -66,5 +74,14 @@ public static class SiteEndpoints
         CancellationToken cancellationToken)
     {
         return TypedResults.Ok(await service.GetAllPrivateSitesAsync(cancellationToken));
+    }
+    
+    private static async Task<Results<Ok<PrivateSiteResponse>, NotFound>> GetPrivateSiteByIdAsync(
+        int id,
+        ISiteService service,
+        CancellationToken cancellationToken)
+    {
+        var site = await service.GetPrivateSiteByIdAsync(id, cancellationToken);
+        return site is null ? TypedResults.NotFound() : TypedResults.Ok(site);
     }
 }
