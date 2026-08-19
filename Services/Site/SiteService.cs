@@ -112,4 +112,26 @@ public class SiteService(ApplicationDbContext db) : ISiteService
             AeonNarrative = site.AeonNarrative
         };
     }
+
+    public async Task<bool> UpdateSiteAsync(int siteId, UpdateSiteRequest request,
+        CancellationToken cancellationToken)
+    {
+        var existingSite = await db.Sites.FindAsync([siteId], cancellationToken);
+        if (existingSite is null)
+        {
+            return false;
+        }
+
+        existingSite.Location = request.Location;
+        existingSite.Coordinates = request.Coordinates;
+        existingSite.Latitude = request.Latitude;
+        existingSite.Longitude = request.Longitude;
+        existingSite.Description = request.Description;
+        existingSite.PublicNarrative = request.PublicNarrative;
+        existingSite.AeonNarrative = request.AeonNarrative;
+
+        await db.SaveChangesAsync(cancellationToken);
+
+        return true;
+    }
 }

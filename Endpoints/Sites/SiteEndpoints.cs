@@ -1,4 +1,5 @@
-﻿using AeonRegistryAPI.Filters;
+﻿using System.ComponentModel;
+using AeonRegistryAPI.Filters;
 using AeonRegistryAPI.Models.Request;
 using AeonRegistryAPI.Services.Site;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -26,7 +27,7 @@ public static class SiteEndpoints
         publicGroup.MapGet("/{id:int}", GetPublicSiteByIdAsync)
             .WithName("GetPublicSiteById")
             .Produces<PublicSiteResponse>()
-            .Produces(StatusCodes.Status404NotFound)
+            .Produces<NotFound>()
             .WithSummary("Get site by ID (public)")
             .WithDescription("Get a site by ID with its public data only")
             .AllowAnonymous();
@@ -49,7 +50,7 @@ public static class SiteEndpoints
             .WithName("GetPrivateSiteById")
             .Produces<PrivateSiteResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status404NotFound)
+            .Produces<NotFound>()
             .WithSummary("Get site by ID (public and private)")
             .WithDescription("Get a site by ID with its public and private data");
 
@@ -61,6 +62,16 @@ public static class SiteEndpoints
             .ProducesValidationProblem()
             .WithSummary("Create a new site")
             .WithDescription("Create a new site and return its details");
+        
+        privateGroup.MapPut("", UpdatePrivateSiteAsync)
+            .WithName("UpdatePrivateSite")
+            .Accepts<UpdateSiteRequest>("application/json")
+            .Produces<NoContent>()
+            .Produces<NotFound>()
+            .Produces(StatusCodes.Status401Unauthorized)
+            .ProducesValidationProblem()
+            .WithSummary("Update an existing site")
+            .WithDescription("Update an existing site and return its updated details");
         
         return route;
     }
@@ -100,5 +111,12 @@ public static class SiteEndpoints
     {
         var createdSite = await service.CreateSiteAsync(request, cancellationToken);
         return TypedResults.Created($"/api/private/sites/{createdSite.Id}", createdSite);
+    }
+
+    private static async Task<Results<NoContent, NotFound, ValidationProblem>> UpdatePrivateSiteAsync(
+        int id, UpdateSiteRequest request, ISiteService service, CancellationToken cancellationToken)
+    {
+        var siteWasUpdated = await service.UpdateSiteAsync(id, request, cancellationToken);
+        return !siteWasUpdated ? TypedResults.NotFound() : TypedResults.NoContent();
     }
 }
