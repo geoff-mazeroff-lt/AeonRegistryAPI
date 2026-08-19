@@ -73,6 +73,16 @@ public static class SiteEndpoints
             .WithSummary("Update an existing site")
             .WithDescription("Update an existing site and return its updated details");
         
+        privateGroup.MapDelete("", DeletePrivateSiteAsync)
+            .WithName("DeletePrivateSite")
+            .Accepts<UpdateSiteRequest>("application/json")
+            .Produces<NoContent>()
+            .Produces<NotFound>()
+            .Produces(StatusCodes.Status401Unauthorized)
+            .ProducesValidationProblem()
+            .WithSummary("Delete an existing site")
+            .WithDescription("Delete an existing site");
+        
         return route;
     }
     
@@ -116,7 +126,14 @@ public static class SiteEndpoints
     private static async Task<Results<NoContent, NotFound, ValidationProblem>> UpdatePrivateSiteAsync(
         int id, UpdateSiteRequest request, ISiteService service, CancellationToken cancellationToken)
     {
-        var siteWasUpdated = await service.UpdateSiteAsync(id, request, cancellationToken);
-        return !siteWasUpdated ? TypedResults.NotFound() : TypedResults.NoContent();
+        var wasUpdated = await service.UpdateSiteAsync(id, request, cancellationToken);
+        return !wasUpdated ? TypedResults.NotFound() : TypedResults.NoContent();
+    }
+
+    private static async Task<Results<NoContent, NotFound>> DeletePrivateSiteAsync(int id,
+        ISiteService service, CancellationToken cancellationToken)
+    {
+        var wasDeleted = await service.DeleteSiteAsync(id, cancellationToken);
+        return !wasDeleted ? TypedResults.NotFound() : TypedResults.NoContent();
     }
 }

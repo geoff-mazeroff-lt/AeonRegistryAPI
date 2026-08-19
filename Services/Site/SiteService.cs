@@ -134,4 +134,18 @@ public class SiteService(ApplicationDbContext db) : ISiteService
 
         return true;
     }
+
+    public async Task<bool> DeleteSiteAsync(int siteId, CancellationToken cancellationToken)
+    {
+        var existingSite = await db.Sites.FindAsync([siteId], cancellationToken);
+        if (existingSite is null)
+        {
+            return false;
+        }
+
+        db.Sites.Remove(existingSite);
+        await db.SaveChangesAsync(cancellationToken);
+        
+        return true;
+    }
 }
