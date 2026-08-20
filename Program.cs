@@ -1,9 +1,11 @@
+using AeonRegistryAPI.Endpoints.Artifact;
 using AeonRegistryAPI.Endpoints.CustomIdentity;
 using AeonRegistryAPI.Endpoints.Home;
 using AeonRegistryAPI.Endpoints.Sites;
 using AeonRegistryAPI.Middleware;
 using AeonRegistryAPI.Models;
 using AeonRegistryAPI.Services;
+using AeonRegistryAPI.Services.ArtifactMedia;
 using AeonRegistryAPI.Services.Site;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -37,6 +39,7 @@ builder.Services.AddValidation();
 
 // Custom services
 builder.Services.AddScoped<ISiteService, SiteService>();
+builder.Services.AddScoped<IArtifactMediaService, ArtifactMediaService>();
 
 var app = builder.Build();
 
@@ -68,5 +71,6 @@ authRouteGroup.MapIdentityApi<ApplicationUser>();
 app.MapHomeEndpoints();
 app.MapCustomIdentityEndpoints();
 app.MapSiteEndpoints();
+app.MapArtifactMediaFileEndpoints();
 
 app.Run();

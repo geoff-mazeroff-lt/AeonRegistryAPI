@@ -9,7 +9,7 @@ public class ArtifactMediaFile
 
     public string FileName { get; set; } = string.Empty;
     
-    public string ContentType { get; set; } = "image/jpeg";
+    public string ContentType { get; set; } = "image/png";
     
     public byte[] Data { get; set; } = [];
     
