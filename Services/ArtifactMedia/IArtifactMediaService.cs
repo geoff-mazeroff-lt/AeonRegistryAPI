@@ -2,5 +2,9 @@
 
 public interface IArtifactMediaService
 {
-    Task<PublicArtifactMediaResponse?> GetPublicArtifactImageByIdAsync(int mediaFileId, CancellationToken cancellationToken);
+    Task<PublicArtifactImageResponse?> GetPublicArtifactImageByIdAsync(int mediaFileId,
+        CancellationToken cancellationToken);
+    
+    Task<ArtifactMediaFileResponse?> CreateArtifactMediaFileAsync(int artifactId,
+        IFormFile file, bool isPrimary, CancellationToken cancellationToken);
 }
