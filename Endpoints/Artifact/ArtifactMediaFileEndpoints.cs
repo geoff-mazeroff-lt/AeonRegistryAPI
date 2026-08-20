@@ -32,7 +32,7 @@ public static class ArtifactMediaFileEndpoints
             .Accepts<IFormFile>("multipart/form-data")
             .DisableAntiforgery()
             .Produces<Created>()
-            .Produces<BadRequest>()
+            .Produces<BadRequest<string>>()
             .Produces<NotFound>()
             .WithSummary("Upload an artifact media file")
             .WithDescription("""
@@ -59,21 +59,26 @@ public static class ArtifactMediaFileEndpoints
         return TypedResults.File(artifactImageResponse.Data, artifactImageResponse.ContentType);
     }
 
-    private static async Task<Results<Created, NotFound, BadRequest>> CreateArtifactMediaFile(int artifactId,
+    private static async Task<Results<Created, NotFound, BadRequest<string>>> CreateArtifactMediaFile(int artifactId,
         IFormFile file,
         bool isPrimary,
         IArtifactMediaService service,
         CancellationToken cancellationToken)
     {
-        if (file is null || file.Length == 0)
-            return TypedResults.BadRequest();
+        try
+        {
+            var createResponse =
+                await service.CreateArtifactMediaFileAsync(artifactId, file, isPrimary, cancellationToken);
 
-        var createResponse = await service.CreateArtifactMediaFileAsync(artifactId, file, isPrimary, cancellationToken);
+            if (createResponse is null)
+                return TypedResults.NotFound();
 
-        if (createResponse is null)
-            return TypedResults.NotFound();
-
-        var location = $"/api/public/artifacts/images/{createResponse.Id}";
-        return TypedResults.Created(location);
+            var location = $"/api/public/artifacts/images/{createResponse.Id}";
+            return TypedResults.Created(location);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return TypedResults.BadRequest(ex.Message);
+        }
     }
 }

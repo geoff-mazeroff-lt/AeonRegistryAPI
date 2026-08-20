@@ -1,4 +1,5 @@
-﻿using AeonRegistryAPI.Models;
+﻿using AeonRegistryAPI.Helpers;
+using AeonRegistryAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AeonRegistryAPI.Services.ArtifactMedia;
@@ -32,8 +33,7 @@ public class ArtifactMediaService(ApplicationDbContext db) : IArtifactMediaServi
         if (artifact is null)
             return null;
 
-        if (file is null || file.Length == 0)
-            throw new ArgumentException("File cannot be empty.");
+        await ImageValidationHelper.ValidateImageAsync(file, cancellationToken);
         
         // If this file is primary, ensure all other images for this artifact are not primary.
         if (isPrimary)
