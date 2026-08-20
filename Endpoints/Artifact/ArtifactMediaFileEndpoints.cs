@@ -33,6 +33,7 @@ public static class ArtifactMediaFileEndpoints
             .DisableAntiforgery()
             .Produces<Created>()
             .Produces<BadRequest<string>>()
+            .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>()
             .WithSummary("Upload an artifact media file")
             .WithDescription("""
