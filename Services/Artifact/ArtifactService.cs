@@ -48,4 +48,33 @@ public class ArtifactService(ApplicationDbContext db) : IArtifactService
                     .FirstOrDefault()
             }).ToListAsync(cancellationToken);
     }
+
+    public async Task<List<PublicArtifactResponse>> GetPublicArtifactsBySiteAsync(int siteId,
+        CancellationToken cancellationToken)
+    {
+        var siteExists = await db.Sites.AnyAsync(s => s.Id == siteId, cancellationToken);
+        if (!siteExists)
+            return [];
+
+        return await db.Artifacts
+            .AsNoTracking()
+            .Include(a => a.Site)
+            .Include(a => a.MediaFiles)
+            .Where(a => a.SiteId == siteId)
+            .Select(a => new PublicArtifactResponse
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    CatalogNumber = a.CatalogNumber,
+                    Description = a.PublicNarrative,
+                    DateDiscovered = a.DateDiscovered,
+                    Type = a.Type,
+                    SiteName = a.Site != null ? a.Site.Name : string.Empty,
+                    PrimaryImageUrl = a.MediaFiles
+                        .Where(m => m.IsPrimary)
+                        .Select(m => $"/api/public/artifacts/images/{m.Id}")
+                        .FirstOrDefault()
+                }
+            ).ToListAsync(cancellationToken);
+    }
 }

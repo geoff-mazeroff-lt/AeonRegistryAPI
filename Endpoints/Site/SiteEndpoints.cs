@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using AeonRegistryAPI.Filters;
 using AeonRegistryAPI.Models.Request;
+using AeonRegistryAPI.Services.Artifact;
 using AeonRegistryAPI.Services.Site;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -30,6 +31,14 @@ public static class SiteEndpoints
             .Produces<NotFound>()
             .WithSummary("Get site by ID (public)")
             .WithDescription("Get a site by ID with its public data only")
+            .AllowAnonymous();
+        
+        publicGroup.MapGet("/{siteId:int}/artifacts/", GetPublicArtifactsBySiteAsync)
+            .WithName("GetPublicArtifactsBySite")
+            .Produces<List<PublicArtifactResponse>>()
+            .Produces<NotFound>()
+            .WithSummary("Get sites by artifact ID (public)")
+            .WithDescription("Get a site by artifact ID with its public data only")
             .AllowAnonymous();
         
         var privateGroup = route.MapGroup("/api/private/sites")
@@ -99,6 +108,19 @@ public static class SiteEndpoints
     {
         var site = await service.GetPublicSiteByIdAsync(id, cancellationToken);
         return site is null ? TypedResults.NotFound() : TypedResults.Ok(site);
+    }
+
+    private static async Task<Results<Ok<List<PublicArtifactResponse>>, NotFound>> GetPublicArtifactsBySiteAsync(int siteId,
+        IArtifactService service, CancellationToken cancellationToken)
+    {
+        var artifacts = await service.GetPublicArtifactsBySiteAsync(siteId, cancellationToken);
+
+        if (artifacts.Count == 0)
+        {
+            return TypedResults.NotFound();
+        }
+
+        return TypedResults.Ok(artifacts);
     }
 
     private static async Task<Ok<IEnumerable<PrivateSiteResponse>>> GetAllPrivateSitesAsync(ISiteService service,
