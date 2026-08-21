@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
-using AeonRegistryAPI.Filters;
+﻿using AeonRegistryAPI.Filters;
 using AeonRegistryAPI.Models.Request;
 using AeonRegistryAPI.Services.Artifact;
 using AeonRegistryAPI.Services.Site;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace AeonRegistryAPI.Endpoints.Sites;
+namespace AeonRegistryAPI.Endpoints.Site;
 
 public static class SiteEndpoints
 {
@@ -37,8 +36,8 @@ public static class SiteEndpoints
             .WithName("GetPublicArtifactsBySite")
             .Produces<List<PublicArtifactResponse>>()
             .Produces<NotFound>()
-            .WithSummary("Get sites by artifact ID (public)")
-            .WithDescription("Get a site by artifact ID with its public data only")
+            .WithSummary("Get artifacts at a given site ID (public)")
+            .WithDescription("Get artifacts at a site with its public data only")
             .AllowAnonymous();
         
         var privateGroup = route.MapGroup("/api/private/sites")
@@ -86,11 +85,20 @@ public static class SiteEndpoints
             .WithName("DeletePrivateSite")
             .Accepts<UpdateSiteRequest>("application/json")
             .Produces<NoContent>()
-            .Produces<NotFound>()
             .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<NotFound>()
             .ProducesValidationProblem()
             .WithSummary("Delete an existing site")
             .WithDescription("Delete an existing site");
+        
+        privateGroup.MapGet("/{siteId:int}/artifacts/", GetPrivateArtifactsBySiteAsync)
+            .WithName("GetPrivateArtifactsBySite")
+            .Produces<List<PrivateArtifactResponse>>()
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<NotFound>()
+            .WithSummary("Get artifacts at a given site (public and private)")
+            .WithDescription("Get artifacts at a given site ID with all data")
+            .AllowAnonymous();
         
         return route;
     }
@@ -157,5 +165,18 @@ public static class SiteEndpoints
     {
         var wasDeleted = await service.DeleteSiteAsync(id, cancellationToken);
         return !wasDeleted ? TypedResults.NotFound() : TypedResults.NoContent();
+    }
+    
+    private static async Task<Results<Ok<List<PrivateArtifactResponse>>, NotFound>> GetPrivateArtifactsBySiteAsync(int siteId,
+        IArtifactService service, CancellationToken cancellationToken)
+    {
+        var artifacts = await service.GetPrivateArtifactsBySiteAsync(siteId, cancellationToken);
+
+        if (artifacts.Count == 0)
+        {
+            return TypedResults.NotFound();
+        }
+
+        return TypedResults.Ok(artifacts);
     }
 }

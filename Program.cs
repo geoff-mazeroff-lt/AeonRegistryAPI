@@ -1,7 +1,7 @@
 using AeonRegistryAPI.Endpoints.Artifact;
 using AeonRegistryAPI.Endpoints.CustomIdentity;
 using AeonRegistryAPI.Endpoints.Home;
-using AeonRegistryAPI.Endpoints.Sites;
+using AeonRegistryAPI.Endpoints.Site;
 using AeonRegistryAPI.Middleware;
 using AeonRegistryAPI.Models;
 using AeonRegistryAPI.Services;
