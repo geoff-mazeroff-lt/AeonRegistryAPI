@@ -6,9 +6,13 @@ public interface IArtifactService
 {
     Task<List<PublicArtifactResponse>> GetPublicArtifactsAsync(CancellationToken cancellationToken);
     
+    Task<PublicArtifactResponse?> GetPublicArtifactByIdAsync(int id, CancellationToken cancellationToken);
+    
     Task<List<PublicArtifactResponse>> GetPublicArtifactsBySiteAsync(int siteId, CancellationToken cancellationToken);
     
     Task<List<PrivateArtifactResponse>> GetPrivateArtifactsAsync(CancellationToken cancellationToken);
+    
+    Task<PrivateArtifactResponse?> GetPrivateArtifactByIdAsync(int id, CancellationToken cancellationToken);
     
     Task<List<PrivateArtifactResponse>> GetPrivateArtifactsBySiteAsync(int siteId, CancellationToken cancellationToken);
     

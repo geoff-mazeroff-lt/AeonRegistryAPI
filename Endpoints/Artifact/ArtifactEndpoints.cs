@@ -21,6 +21,13 @@ public static class ArtifactEndpoints
             .Produces<List<PublicArtifactResponse>>()
             .Produces<NotFound>();
         
+        publicGroup.MapGet("{id:int}", GetPublicArtifactByIdAsync)
+            .WithName("GetPublicArtifactById")
+            .WithSummary("Get an artifact by ID (public info only)")
+            .WithDescription("Get public info about a specific artifact")
+            .Produces<List<PublicArtifactResponse>>()
+            .Produces<NotFound>();
+        
         var privateGroup = route.MapGroup("/api/private/artifacts")
             .WithTags("Artifacts - Private")
             .AddEndpointFilter<ExceptionHandlingFilter>()
@@ -31,6 +38,14 @@ public static class ArtifactEndpoints
             .WithSummary("Get all artifacts (public and private info)")
             .WithDescription("Get all artifacts with full info")
             .Produces<List<PrivateArtifactResponse>>()
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<NotFound>();
+        
+        privateGroup.MapGet("{id:int}", GetPrivateArtifactByIdAsync)
+            .WithName("GetPrivateArtifactById")
+            .WithSummary("Get an artifact by ID (public and private info)")
+            .WithDescription("Get all info about a specific artifact")
+            .Produces<PrivateArtifactResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
         
@@ -51,9 +66,25 @@ public static class ArtifactEndpoints
     {
         var artifacts = await service.GetPublicArtifactsAsync(cancellationToken);
         if (artifacts.Count == 0)
+        {
             return TypedResults.NotFound();
+        }
         
         return TypedResults.Ok(artifacts);
+    }
+    
+    private static async Task<Results<Ok<PublicArtifactResponse>, NotFound>> GetPublicArtifactByIdAsync(
+        int id,
+        IArtifactService service,
+        CancellationToken cancellationToken)
+    {
+        var artifact = await service.GetPublicArtifactByIdAsync(id, cancellationToken);
+        if (artifact is null)
+        {
+            return TypedResults.NotFound();
+        }
+        
+        return TypedResults.Ok(artifact);
     }
     
     private static async Task<Results<Ok<List<PrivateArtifactResponse>>, NotFound>> GetPrivateArtifactsAsync(
@@ -61,9 +92,25 @@ public static class ArtifactEndpoints
     {
         var artifacts = await service.GetPrivateArtifactsAsync(cancellationToken);
         if (artifacts.Count == 0)
+        {
             return TypedResults.NotFound();
+        }
         
         return TypedResults.Ok(artifacts);
+    }
+    
+    private static async Task<Results<Ok<PrivateArtifactResponse>, NotFound>> GetPrivateArtifactByIdAsync(
+        int id,
+        IArtifactService service,
+        CancellationToken cancellationToken)
+    {
+        var artifact = await service.GetPrivateArtifactByIdAsync(id, cancellationToken);
+        if (artifact is null)
+        {
+            return TypedResults.NotFound();
+        }
+        
+        return TypedResults.Ok(artifact);
     }
 
     private static async Task<Results<Created<PrivateArtifactResponse>, NotFound>> CreatePrivateArtifactAsync(
