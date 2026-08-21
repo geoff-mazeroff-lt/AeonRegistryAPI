@@ -1,4 +1,6 @@
-﻿namespace AeonRegistryAPI.Services.Artifact;
+﻿using AeonRegistryAPI.Models.Request;
+
+namespace AeonRegistryAPI.Services.Artifact;
 
 public interface IArtifactService
 {
@@ -9,4 +11,6 @@ public interface IArtifactService
     Task<List<PrivateArtifactResponse>> GetPrivateArtifactsAsync(CancellationToken cancellationToken);
     
     Task<List<PrivateArtifactResponse>> GetPrivateArtifactsBySiteAsync(int siteId, CancellationToken cancellationToken);
+    
+    Task<PrivateArtifactResponse?> CreateArtifactAsync(CreateArtifactRequest request, CancellationToken cancellationToken);
 }

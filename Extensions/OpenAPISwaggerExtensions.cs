@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi;
+﻿using AeonRegistryAPI.Filters;
+using Microsoft.OpenApi;
 
 namespace AeonRegistryAPI.Extensions;
 
@@ -70,6 +71,8 @@ public static class OpenApiSwaggerExtensions
                 
                 return !endPointsToHide.Contains(path, StringComparer.OrdinalIgnoreCase);
             });
+            
+            c.SchemaFilter<EnumStringSchemaFilter>();
         });
         
         return services;

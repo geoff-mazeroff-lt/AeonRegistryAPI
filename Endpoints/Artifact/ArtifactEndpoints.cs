@@ -1,4 +1,5 @@
 ﻿using AeonRegistryAPI.Filters;
+using AeonRegistryAPI.Models.Request;
 using AeonRegistryAPI.Services.Artifact;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -32,6 +33,15 @@ public static class ArtifactEndpoints
             .Produces<List<PrivateArtifactResponse>>()
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
+        
+        privateGroup.MapPost("", CreatePrivateArtifactAsync)
+            .WithName("CreatePrivateArtifact")
+            .WithSummary("Create a new artifact")
+            .WithDescription("Create a new artifact")
+            .ProducesValidationProblem()
+            .Produces<PrivateArtifactResponse>(StatusCodes.Status201Created)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<NotFound>();
 
         return route;
     }
@@ -54,5 +64,19 @@ public static class ArtifactEndpoints
             return TypedResults.NotFound();
         
         return TypedResults.Ok(artifacts);
+    }
+
+    private static async Task<Results<Created<PrivateArtifactResponse>, NotFound>> CreatePrivateArtifactAsync(
+        CreateArtifactRequest request,
+        IArtifactService service, 
+        CancellationToken cancellationToken)
+    {
+        var createdArtifact = await service.CreateArtifactAsync(request, cancellationToken);
+        if (createdArtifact is null)
+        {
+            return TypedResults.NotFound();
+        }
+
+        return TypedResults.Created($"/api/private/artifacts/{createdArtifact.Id}", createdArtifact);
     }
 }
