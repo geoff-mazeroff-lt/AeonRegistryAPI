@@ -11,87 +11,78 @@ public static class SiteEndpoints
     public static IEndpointRouteBuilder MapSiteEndpoints(this IEndpointRouteBuilder route)
     {
         var publicGroup = route.MapGroup("/api/public/sites")
-            .AllowAnonymous()
-            .WithSummary("Public Site Endpoints")
-            .WithDescription("Endpoints that expose public site data")
             .WithTags("Sites - Public")
             .AddEndpointFilter<ExceptionHandlingFilter>();
 
         publicGroup.MapGet("", GetAllPublicSitesAsync)
             .WithName("GetAllPublicSites")
-            .WithSummary("Get all sites (public)")
-            .WithDescription("Get all sites with their public data only")
+            .WithSummary("List all sites")
+            .WithDescription("Lists all sites with their public data only.")
             .Produces<IEnumerable<PublicSiteResponse>>();
 
         publicGroup.MapGet("{id:int}", GetPublicSiteByIdAsync)
             .WithName("GetPublicSiteById")
-            .WithSummary("Get site by ID (public)")
-            .WithDescription("Get a site by ID with its public data only")
+            .WithSummary("Retrieve a site")
+            .WithDescription("Retrieves a site with its public data only.")
             .Produces<PublicSiteResponse>()
             .Produces<NotFound>();
 
-        publicGroup.MapGet("{siteId:int}/artifacts/", GetPublicArtifactsBySiteAsync)
+        publicGroup.MapGet("{id:int}/artifacts/", GetPublicArtifactsBySiteAsync)
             .WithName("GetPublicArtifactsBySite")
-            .WithSummary("Get artifacts at a given site ID (public)")
-            .WithDescription("Get artifacts at a site with its public data only")
+            .WithSummary("List artifacts for a given site")
+            .WithDescription("Lists artifacts for a site with its public data only.")
             .Produces<List<PublicArtifactResponse>>()
             .Produces<NotFound>();
         
         var privateGroup = route.MapGroup("/api/private/sites")
-            .RequireAuthorization()
-            .WithSummary("Private Site Endpoints")
-            .WithDescription("Endpoints that expose public and private site data")
             .WithTags("Sites - Private")
+            .RequireAuthorization()
             .AddEndpointFilter<ExceptionHandlingFilter>();
 
         privateGroup.MapGet("", GetAllPrivateSitesAsync)
             .WithName("GetAllPrivateSites")
-            .WithSummary("Get all sites (private)")
-            .WithDescription("Get all sites with their public and private data")
+            .WithSummary("List all sites")
+            .WithDescription("Lists all sites.")
             .Produces<IEnumerable<PrivateSiteResponse>>()
             .Produces(StatusCodes.Status401Unauthorized);
 
         privateGroup.MapGet("{id:int}", GetPrivateSiteByIdAsync)
             .WithName("GetPrivateSiteById")
-            .WithSummary("Get site by ID (public and private)")
-            .WithDescription("Get a site by ID with its public and private data")
+            .WithSummary("Retrieve a site")
+            .WithDescription("Retrieves a site.")
             .Produces<PrivateSiteResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
 
         privateGroup.MapPost("", CreatePrivateSiteAsync)
             .WithName("CreatePrivateSite")
-            .WithSummary("Create a new site")
-            .WithDescription("Create a new site and return its details")
-            .Accepts<CreateSiteRequest>("application/json")
-            .ProducesValidationProblem()
+            .WithSummary("Create a site")
+            .WithDescription("Creates a new site.")
             .Produces<PrivateSiteResponse>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status401Unauthorized)
             .ProducesValidationProblem();
 
         privateGroup.MapPut("", UpdatePrivateSiteAsync)
             .WithName("UpdatePrivateSite")
-            .WithSummary("Update an existing site")
-            .WithDescription("Update an existing site and return its updated details")
-            .Accepts<UpdateSiteRequest>("application/json")
+            .WithSummary("Update a site")
+            .WithDescription("Updates an existing site.")
             .ProducesValidationProblem()
             .Produces<NoContent>()
             .Produces<NotFound>()
-            .Produces(StatusCodes.Status401Unauthorized)
-            .ProducesValidationProblem();
+            .Produces(StatusCodes.Status401Unauthorized);
 
         privateGroup.MapDelete("", DeletePrivateSiteAsync)
             .WithName("DeletePrivateSite")
-            .WithSummary("Delete an existing site")
-            .WithDescription("Delete an existing site")
+            .WithSummary("Delete a site")
+            .WithDescription("Deletes a site.")
             .Produces<NoContent>()
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
 
-        privateGroup.MapGet("{siteId:int}/artifacts/", GetPrivateArtifactsBySiteAsync)
+        privateGroup.MapGet("{id:int}/artifacts/", GetPrivateArtifactsBySiteAsync)
             .WithName("GetPrivateArtifactsBySite")
-            .WithSummary("Get artifacts at a given site (public and private)")
-            .WithDescription("Get artifacts at a given site ID with all data")
+            .WithSummary("List artifacts for a given site")
+            .WithDescription("Lists artifacts for a site.")
             .Produces<List<PrivateArtifactResponse>>()
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
@@ -114,10 +105,10 @@ public static class SiteEndpoints
         return site is null ? TypedResults.NotFound() : TypedResults.Ok(site);
     }
 
-    private static async Task<Results<Ok<List<PublicArtifactResponse>>, NotFound>> GetPublicArtifactsBySiteAsync(int siteId,
+    private static async Task<Results<Ok<List<PublicArtifactResponse>>, NotFound>> GetPublicArtifactsBySiteAsync(int id,
         IArtifactService service, CancellationToken cancellationToken)
     {
-        var artifacts = await service.GetPublicArtifactsBySiteAsync(siteId, cancellationToken);
+        var artifacts = await service.GetPublicArtifactsBySiteAsync(id, cancellationToken);
 
         if (artifacts.Count == 0)
         {
@@ -163,10 +154,10 @@ public static class SiteEndpoints
         return !wasDeleted ? TypedResults.NotFound() : TypedResults.NoContent();
     }
     
-    private static async Task<Results<Ok<List<PrivateArtifactResponse>>, NotFound>> GetPrivateArtifactsBySiteAsync(int siteId,
+    private static async Task<Results<Ok<List<PrivateArtifactResponse>>, NotFound>> GetPrivateArtifactsBySiteAsync(int id,
         IArtifactService service, CancellationToken cancellationToken)
     {
-        var artifacts = await service.GetPrivateArtifactsBySiteAsync(siteId, cancellationToken);
+        var artifacts = await service.GetPrivateArtifactsBySiteAsync(id, cancellationToken);
 
         if (artifacts.Count == 0)
         {

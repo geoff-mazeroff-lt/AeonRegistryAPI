@@ -100,4 +100,4 @@ Define with `.WithDescription()`.
 ### Components without documentation
 For brevity the properties for request and response DTOs are not documented. For requests that have multiple properties, Swagger already generates the schema to show constraints like max length or if certain values are required.
 
-The endpoints are descriptive enough that the response codes aren't further documented (e.g., 401, 404).
+The endpoints are descriptive enough that the response codes aren't further documented (e.g., 401, 404). **Note**: It is still important to use `.Produces()` or `.Produces<T>()` and/or `.ProducesValidationProblem()` when defining endpoints.
