@@ -14,7 +14,6 @@ public class EnumStringSchemaFilter : ISchemaFilter
             // "Type" is a generic sounding property name. Ensure we're only applying enum
             // names for the appropriate type.
             var declaringTypeName = context.MemberInfo?.DeclaringType?.Name;
-            Console.WriteLine(declaringTypeName);
             if (declaringTypeName != null && declaringTypeName.EndsWith("ArtifactRequest"))
             {
                 schema.Description = "Allowed values: " + string.Join(", ", Enum.GetNames<ArtifactType>());

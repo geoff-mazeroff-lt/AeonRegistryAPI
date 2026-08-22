@@ -197,4 +197,35 @@ public class ArtifactService(ApplicationDbContext db) : IArtifactService
             SiteName = site.Name
         };
     }
+
+    public async Task<bool> UpdateArtifactAsync(int id, UpdateArtifactRequest request,
+        CancellationToken cancellationToken)
+    {
+        var siteExists = await db.Sites.AnyAsync(s => s.Id == request.SiteId, cancellationToken);
+        if (!siteExists)
+        {
+            return false;
+        }
+        
+        var existingArtifact = await db.Artifacts.FindAsync([id], cancellationToken);
+        if (existingArtifact is null)
+        {
+            return false;
+        }
+        
+        if (!Enum.TryParse<ArtifactType>(request.Type, true, out _))
+        {
+            throw new ArgumentException("Invalid artifact type");
+        }
+
+        existingArtifact.Name = request.Name;
+        existingArtifact.CatalogNumber = request.CatalogNumber;
+        existingArtifact.Description = request.Description;
+        existingArtifact.PublicNarrative = request.PublicNarrative;
+        existingArtifact.DateDiscovered = request.DateDiscovered;
+        existingArtifact.Type = request.Type;
+        
+        await db.SaveChangesAsync(cancellationToken);
+        return true;
+    }
 }

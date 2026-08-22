@@ -57,6 +57,15 @@ public static class ArtifactEndpoints
             .Produces<PrivateArtifactResponse>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
+        
+        privateGroup.MapPut("", UpdatePrivateArtifactAsync)
+            .WithName("UpdatePrivateArtifact")
+            .WithSummary("Update an artifact")
+            .WithDescription("Update an artifact")
+            .ProducesValidationProblem()
+            .Produces<PrivateArtifactResponse>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<NotFound>();
 
         return route;
     }
@@ -125,5 +134,15 @@ public static class ArtifactEndpoints
         }
 
         return TypedResults.Created($"/api/private/artifacts/{createdArtifact.Id}", createdArtifact);
+    }
+
+    private static async Task<Results<NoContent, NotFound>> UpdatePrivateArtifactAsync(
+        int id,
+        UpdateArtifactRequest request,
+        IArtifactService service, 
+        CancellationToken cancellationToken)
+    {
+        var wasUpdated = await service.UpdateArtifactAsync(id, request, cancellationToken);
+        return !wasUpdated ? TypedResults.NotFound() : TypedResults.NoContent();
     }
 }
