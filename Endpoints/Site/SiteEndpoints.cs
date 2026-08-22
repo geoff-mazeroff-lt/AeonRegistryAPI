@@ -24,7 +24,7 @@ public static class SiteEndpoints
             .WithDescription("Get all sites with their public data only")
             .AllowAnonymous();
         
-        publicGroup.MapGet("/{id:int}", GetPublicSiteByIdAsync)
+        publicGroup.MapGet("{id:int}", GetPublicSiteByIdAsync)
             .WithName("GetPublicSiteById")
             .Produces<PublicSiteResponse>()
             .Produces<NotFound>()
@@ -32,7 +32,7 @@ public static class SiteEndpoints
             .WithDescription("Get a site by ID with its public data only")
             .AllowAnonymous();
         
-        publicGroup.MapGet("/{siteId:int}/artifacts/", GetPublicArtifactsBySiteAsync)
+        publicGroup.MapGet("{siteId:int}/artifacts/", GetPublicArtifactsBySiteAsync)
             .WithName("GetPublicArtifactsBySite")
             .Produces<List<PublicArtifactResponse>>()
             .Produces<NotFound>()
@@ -54,7 +54,7 @@ public static class SiteEndpoints
             .WithSummary("Get all sites (private)")
             .WithDescription("Get all sites with their public and private data");
 
-        privateGroup.MapGet("/{id:int}", GetPrivateSiteByIdAsync)
+        privateGroup.MapGet("{id:int}", GetPrivateSiteByIdAsync)
             .WithName("GetPrivateSiteById")
             .Produces<PrivateSiteResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
@@ -91,7 +91,7 @@ public static class SiteEndpoints
             .WithSummary("Delete an existing site")
             .WithDescription("Delete an existing site");
         
-        privateGroup.MapGet("/{siteId:int}/artifacts/", GetPrivateArtifactsBySiteAsync)
+        privateGroup.MapGet("{siteId:int}/artifacts/", GetPrivateArtifactsBySiteAsync)
             .WithName("GetPrivateArtifactsBySite")
             .Produces<List<PrivateArtifactResponse>>()
             .Produces(StatusCodes.Status401Unauthorized)

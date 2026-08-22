@@ -67,7 +67,7 @@ public static class ArtifactEndpoints
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
         
-        privateGroup.MapDelete("", DeletePrivateArtifactAsync)
+        privateGroup.MapDelete("{id:int}", DeletePrivateArtifactAsync)
             .WithName("DeletePrivateArtifact")
             .WithSummary("Delete an artifact")
             .WithDescription("Delete an artifact")

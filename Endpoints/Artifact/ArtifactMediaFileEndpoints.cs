@@ -13,7 +13,7 @@ public static class ArtifactMediaFileEndpoints
             .AddEndpointFilter<ExceptionHandlingFilter>()
             .AllowAnonymous();
 
-        publicGroup.MapGet("/{id:int}", GetPublicArtifactImage)
+        publicGroup.MapGet("{id:int}", GetPublicArtifactImage)
             .WithName("GetPublicArtifactImage")
             .Produces<FileContentHttpResult>(StatusCodes.Status200OK)
             .Produces<NotFound>()
