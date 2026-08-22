@@ -15,24 +15,23 @@ public static class ArtifactMediaFileEndpoints
 
         publicGroup.MapGet("{id:int}", GetPublicArtifactImage)
             .WithName("GetPublicArtifactImage")
-            .WithSummary("Get artifact image (public)")
-            .WithDescription("Get binary image data for a specific artifact media record (public)")
-            .Produces<FileContentHttpResult>(StatusCodes.Status200OK)
+            .WithSummary("Retrieve an artifact image")
+            .WithDescription("Retrieves the binary image data for an artifact media record.")
+            .Produces<FileContentHttpResult>()
             .Produces<NotFound>();
         
-        var privateGroup = route.MapGroup("/api/private/artifacts/images")
-            .RequireAuthorization()
-            .WithSummary("Private Artifact Media File Endpoints")
-            .WithDescription("Endpoints that require authorization")
+        var privateGroup = route.MapGroup("/api/private/artifacts/media-file")
             .WithTags("Artifact Media - Private")
+            .RequireAuthorization()
             .AddEndpointFilter<ExceptionHandlingFilter>();
 
         privateGroup.MapPost("", CreateArtifactMediaFile)
             .WithName("CreateArtifactMediaFile")
-            .WithSummary("Upload an artifact media file")
+            .WithSummary("Create an artifact media file")
             .WithDescription("""
                              Uploads an image file and associates it with an existing artifact.
-                             Optional flag 'isPrimary' can be provided in the query or form data.
+                             If 'isPrimary' is true, the new image will be set as the primary image for
+                             the artifact and any other previous primary image will be be marked as not primary.
                              """)
             .Accepts<IFormFile>("multipart/form-data")
             .DisableAntiforgery()
