@@ -21,24 +21,21 @@ public static class SiteEndpoints
             .WithName("GetAllPublicSites")
             .Produces<IEnumerable<PublicSiteResponse>>()
             .WithSummary("Get all sites (public)")
-            .WithDescription("Get all sites with their public data only")
-            .AllowAnonymous();
-        
+            .WithDescription("Get all sites with their public data only");
+
         publicGroup.MapGet("{id:int}", GetPublicSiteByIdAsync)
             .WithName("GetPublicSiteById")
             .Produces<PublicSiteResponse>()
             .Produces<NotFound>()
             .WithSummary("Get site by ID (public)")
-            .WithDescription("Get a site by ID with its public data only")
-            .AllowAnonymous();
-        
+            .WithDescription("Get a site by ID with its public data only");
+
         publicGroup.MapGet("{siteId:int}/artifacts/", GetPublicArtifactsBySiteAsync)
             .WithName("GetPublicArtifactsBySite")
             .Produces<List<PublicArtifactResponse>>()
             .Produces<NotFound>()
             .WithSummary("Get artifacts at a given site ID (public)")
-            .WithDescription("Get artifacts at a site with its public data only")
-            .AllowAnonymous();
+            .WithDescription("Get artifacts at a site with its public data only");
         
         var privateGroup = route.MapGroup("/api/private/sites")
             .RequireAuthorization()
