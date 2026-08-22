@@ -15,10 +15,10 @@ public static class ArtifactMediaFileEndpoints
 
         publicGroup.MapGet("{id:int}", GetPublicArtifactImage)
             .WithName("GetPublicArtifactImage")
-            .Produces<FileContentHttpResult>(StatusCodes.Status200OK)
-            .Produces<NotFound>()
             .WithSummary("Get artifact image (public)")
-            .WithDescription("Get binary image data for a specific artifact media record (public)");
+            .WithDescription("Get binary image data for a specific artifact media record (public)")
+            .Produces<FileContentHttpResult>(StatusCodes.Status200OK)
+            .Produces<NotFound>();
         
         var privateGroup = route.MapGroup("/api/private/artifacts/images")
             .RequireAuthorization()
@@ -26,20 +26,20 @@ public static class ArtifactMediaFileEndpoints
             .WithDescription("Endpoints that require authorization")
             .WithTags("Artifact Media - Private")
             .AddEndpointFilter<ExceptionHandlingFilter>();
-        
+
         privateGroup.MapPost("", CreateArtifactMediaFile)
             .WithName("CreateArtifactMediaFile")
+            .WithSummary("Upload an artifact media file")
+            .WithDescription("""
+                             Uploads an image file and associates it with an existing artifact.
+                             Optional flag 'isPrimary' can be provided in the query or form data.
+                             """)
             .Accepts<IFormFile>("multipart/form-data")
             .DisableAntiforgery()
             .Produces<Created>()
             .Produces<BadRequest<string>>()
             .Produces(StatusCodes.Status401Unauthorized)
-            .Produces<NotFound>()
-            .WithSummary("Upload an artifact media file")
-            .WithDescription("""
-                             Uploads an image file and associates it with an existing artifact.
-                             Optional flag 'isPrimary' can be provided in the query or form data.
-                             """);
+            .Produces<NotFound>();
         
         return route;
     }

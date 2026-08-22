@@ -71,7 +71,7 @@ public static class ArtifactEndpoints
             .WithName("DeletePrivateArtifact")
             .WithSummary("Delete an artifact")
             .WithDescription("Delete an artifact")
-            .Produces<PrivateArtifactResponse>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
 
