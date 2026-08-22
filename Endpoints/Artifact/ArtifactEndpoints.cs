@@ -11,8 +11,7 @@ public static class ArtifactEndpoints
     {
         var publicGroup = route.MapGroup("/api/public/artifacts")
             .WithTags("Artifacts - Public")
-            .AddEndpointFilter<ExceptionHandlingFilter>()
-            .AllowAnonymous();
+            .AddEndpointFilter<ExceptionHandlingFilter>();
 
         publicGroup.MapGet("", GetPublicArtifactsAsync)
             .WithName("GetPublicArtifacts")

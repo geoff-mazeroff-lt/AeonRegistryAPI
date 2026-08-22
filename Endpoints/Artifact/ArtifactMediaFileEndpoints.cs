@@ -10,8 +10,7 @@ public static class ArtifactMediaFileEndpoints
     {
         var publicGroup = route.MapGroup("/api/public/artifacts/images")
             .WithTags("Artifact Media - Public")
-            .AddEndpointFilter<ExceptionHandlingFilter>()
-            .AllowAnonymous();
+            .AddEndpointFilter<ExceptionHandlingFilter>();
 
         publicGroup.MapGet("{id:int}", GetPublicArtifactImage)
             .WithName("GetPublicArtifactImage")

@@ -62,6 +62,32 @@ The seed data defines user roles for role-based access control (RBAC); however, 
 Something I would have done differently at the beginning of the project was have the database (and admin interface) hosted in a container rather than requiring those tools to be explicitly installed locally as the course required.
 
 ## Project structure and conventions
+- `Data`: Infrastructure for the database (in this case, Entity Framework (EF) Core)
+  - Mock data
+  - Utilities for managing data outside of EF
+- `Endpoints`: API endpoint definitions grouped using directories
+  - Directory names match the associated entity and are singular (e.g., "Artifact")
+  - Endpoint definitions exist in `{Entity}Endpoints.cs` where the entity is singular
+  - Use services to perform the work / business logic
+  - Routes start with `/` and are defined using `.MapGroup()`
+  - Endpoints do not start with `/`
+  - Add `.ProducesValidationProblem()` for an endpoint whose request DTO contains data annotations
+  - Handlers
+    - Return `Task` and pass cancellation tokens to the service
+    - For the return type: If returning a single result, use `Ok<T>`, `Created<T>`, or `NoContent`. For multiple possible return values, use `Results<T1,T2...>`.
+    - Return values with `TypedResults`
+- `Migrations`: EF-generated migrations and model snapshot
+- `Models`
+  - EF entities
+  - Data transfer objects (DTOs)
+    - Requests exist in `Models/Request/` and are defined in `{Action}Request.cs`
+    - Responses exist in `Models/Response/` and are defined in `{Entity}Response.cs`
+    - Use `record` instead of `class`
+    - Make use of data annotations on requests to take advantage of built-in model validation and Swagger schema generation
+- `Services`
+  - Group by entity in directories, where a directory contains the interface and its implementation
+  - Name based on the entity (singular) using `I{Entity}Service.cs`
+  - Methods return `Task` and have names that end in "Async"
 
 ## API conventions
 Endpoints are grouped by entity and access. Although the routes to public and private endpoints differ, this grouping makes the Swagger interface easier to scan. Another advantage for implementation is that certain attributes can be applied at the group level rather than having to remember to apply to each endpoint (e.g., `.RequiresAuthorization()`, `.WithTags()`).
