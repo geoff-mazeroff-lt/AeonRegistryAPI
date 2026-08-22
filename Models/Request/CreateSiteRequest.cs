@@ -2,7 +2,7 @@
 
 namespace AeonRegistryAPI.Models.Request;
 
-public class CreateSiteRequest
+public record CreateSiteRequest
 {
     [Required, MaxLength(200)]
     public string? Name { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace AeonRegistryAPI.Models.Response;
 
-public class ArtifactMediaFileResponse
+public record ArtifactMediaFileResponse
 {
     public int Id { get; set; }
 }

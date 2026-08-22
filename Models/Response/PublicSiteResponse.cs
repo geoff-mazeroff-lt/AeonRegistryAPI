@@ -1,6 +1,6 @@
 ﻿namespace AeonRegistryAPI.Models.Response;
 
-public class PublicSiteResponse
+public record PublicSiteResponse
 {
     public int Id { get; set; }
     public string? Name { get; set; } = string.Empty;

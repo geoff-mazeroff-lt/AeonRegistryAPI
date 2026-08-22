@@ -1,6 +1,6 @@
 ﻿namespace AeonRegistryAPI.Models.Response;
 
-public class PublicArtifactResponse
+public record PublicArtifactResponse
 {
     public int Id { get; set; }
     public string? Name { get; set; }

@@ -2,7 +2,7 @@
 
 namespace AeonRegistryAPI.Models.Request;
 
-public class UpdateSiteRequest
+public record UpdateSiteRequest
 {
     [Required, MaxLength(200)]
     public string? Name { get; set; }
