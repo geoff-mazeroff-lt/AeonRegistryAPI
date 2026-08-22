@@ -17,4 +17,6 @@ public interface ISiteService
     Task<bool> UpdateSiteAsync(int siteId, UpdateSiteRequest request, CancellationToken cancellationToken);
     
     Task<bool> DeleteSiteAsync(int siteId, CancellationToken cancellationToken);
+    
+    Task<bool> ArchiveSiteAsync(int siteId, CancellationToken cancellationToken);
 }

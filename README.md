@@ -46,7 +46,6 @@ From the Swagger interface, use `/api/auth/register-admin` to create a user. As 
 **Warnings:** There are some elements from the Udemy video I typed verbatim that are inconsistent. Maybe these will be addressed in future segments.
 - Why is the endpoint called `register-admin`? Is it to register a new administrator, or is it only supposed to be called by an administrator?
 - Registering a user writes the content of a would-be email to the new user, and that content contains a password reset link. Perhaps the presenter included this to show how you would start setting it up, but the link **does nothing**.
-- `register-admin` assigns a `Researcher` role, but I'm not sure how that gets created or what it does.
 
 ### Forgot password
 From the Swagger interface, use `/api/auth/forgot-password` to initiate the password reset flow. The password reset token is written to the console, which can then be used with `/api/auth/reset-password`.
@@ -58,7 +57,7 @@ From the Swagger interface, use `/api/auth/forgot-password` to initiate the pass
 ## Product notes and future ideas
 The API is incomplete. The Udemy course covered the basic mechanics of getting data in and out of the system. However, there are certain entities (such as Catalog Records) that don't have endpoints.
 
-The seed data defines user roles for role-based access control (RBAC); however, the course never made use of those.
+The seed data defines user roles for role-based access control (RBAC); however, the course never made use of those. I created an example endpoint (`/api/private/sites/{id}/archive`) that demonstrates how this works.
 
 Something I would have done differently at the beginning of the project was have the database (and admin interface) hosted in a container rather than requiring those tools to be explicitly installed locally as the course required.
 
@@ -82,7 +81,7 @@ Define with `.WithSummary()`.
   - GET (collection): "List"
   - POST (create): "Create"
   - POST (non-CRUD action): The domain verb itself (e.g., "Cancel", "Archive")
-  - PUT: "Replace"
+  - PUT: "Update"
   - DELETE: "Delete"
 - Keep it under 80 characters. It should name the single primary action only.
 

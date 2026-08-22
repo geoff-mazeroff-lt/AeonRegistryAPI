@@ -148,4 +148,18 @@ public class SiteService(ApplicationDbContext db) : ISiteService
         
         return true;
     }
+
+    public async Task<bool> ArchiveSiteAsync(int siteId, CancellationToken cancellationToken)
+    {
+        var existingSite = await db.Sites.FindAsync([siteId], cancellationToken);
+        if (existingSite is null)
+        {
+            return false;
+        }
+
+        existingSite.Name += " [ARCHIVED]";
+        await db.SaveChangesAsync(cancellationToken);
+        
+        return true;
+    }
 }

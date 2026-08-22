@@ -87,6 +87,15 @@ public static class SiteEndpoints
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
         
+        privateGroup.MapPost("{id:int}/archive/", ArchivePrivateSiteAsync)
+            .WithName("ArchiveSite")
+            .WithSummary("Mark a site as archived")
+            .WithDescription("Modifies the site's name to designate it as archived.")
+            .RequireAuthorization(policy => policy.RequireRole("Archivist"))
+            .Produces<NoContent>()
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<NotFound>();
+        
         return route;
     }
     
@@ -165,5 +174,12 @@ public static class SiteEndpoints
         }
 
         return TypedResults.Ok(artifacts);
+    }
+    
+    private static async Task<Results<NoContent, NotFound>> ArchivePrivateSiteAsync(int id,
+        ISiteService service, CancellationToken cancellationToken)
+    {
+        var wasArchived = await service.ArchiveSiteAsync(id, cancellationToken);
+        return !wasArchived ? TypedResults.NotFound() : TypedResults.NoContent();
     }
 }
