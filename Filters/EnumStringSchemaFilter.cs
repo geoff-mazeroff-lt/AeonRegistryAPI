@@ -10,7 +10,6 @@ public class EnumStringSchemaFilter : ISchemaFilter
     {
         if (context.Type == typeof(string) && context.MemberInfo?.Name == "Type")
         {
-            
             // "Type" is a generic sounding property name. Ensure we're only applying enum
             // names for the appropriate type.
             var declaringTypeName = context.MemberInfo?.DeclaringType?.Name;

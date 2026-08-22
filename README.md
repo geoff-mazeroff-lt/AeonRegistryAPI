@@ -52,3 +52,6 @@ Run `dotnet restore` then `dotnet run`.
 ## Entity Framework reminders
 - To create a migration: `dotnet ef migrations add {NameOfMigrationHere}`.
 - To run migrations: `dotnet ef database update`.
+
+## Other project notes
+The API is incomplete; the Udemy course covered the basic mechanics of getting data in and out of the system. However, there are certain entities (such as Catalog Records) that aren't meaningfully connected.

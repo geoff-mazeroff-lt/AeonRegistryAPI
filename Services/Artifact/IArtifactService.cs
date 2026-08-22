@@ -19,4 +19,6 @@ public interface IArtifactService
     Task<PrivateArtifactResponse?> CreateArtifactAsync(CreateArtifactRequest request, CancellationToken cancellationToken);
     
     Task<bool> UpdateArtifactAsync(int id, UpdateArtifactRequest request, CancellationToken cancellationToken);
+    
+    Task<bool> DeleteArtifactAsync(int id, CancellationToken cancellationToken);
 }

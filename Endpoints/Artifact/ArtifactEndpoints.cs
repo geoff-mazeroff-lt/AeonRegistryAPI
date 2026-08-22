@@ -66,6 +66,14 @@ public static class ArtifactEndpoints
             .Produces<PrivateArtifactResponse>(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
+        
+        privateGroup.MapDelete("", DeletePrivateArtifactAsync)
+            .WithName("DeletePrivateArtifact")
+            .WithSummary("Delete an artifact")
+            .WithDescription("Delete an artifact")
+            .Produces<PrivateArtifactResponse>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces<NotFound>();
 
         return route;
     }
@@ -144,5 +152,14 @@ public static class ArtifactEndpoints
     {
         var wasUpdated = await service.UpdateArtifactAsync(id, request, cancellationToken);
         return !wasUpdated ? TypedResults.NotFound() : TypedResults.NoContent();
+    }
+    
+    private static async Task<Results<NoContent, NotFound>> DeletePrivateArtifactAsync(
+        int id,
+        IArtifactService service, 
+        CancellationToken cancellationToken)
+    {
+        var wasDeleted = await service.DeleteArtifactAsync(id, cancellationToken);
+        return !wasDeleted ? TypedResults.NotFound() : TypedResults.NoContent();
     }
 }

@@ -228,4 +228,23 @@ public class ArtifactService(ApplicationDbContext db) : IArtifactService
         await db.SaveChangesAsync(cancellationToken);
         return true;
     }
+
+    public async Task<bool> DeleteArtifactAsync(int id, CancellationToken cancellationToken)
+    {
+        var existingArtifact = await db.Artifacts.FindAsync([id], cancellationToken);
+        if (existingArtifact is null)
+        {
+            return false;
+        }
+
+        if (existingArtifact.MediaFiles is not null && existingArtifact.MediaFiles.Count != 0)
+        {
+            db.ArtifactMediaFiles.RemoveRange(existingArtifact.MediaFiles);
+        }
+
+        db.Artifacts.Remove(existingArtifact);
+        await db.SaveChangesAsync(cancellationToken);
+        
+        return true;
+    }
 }
