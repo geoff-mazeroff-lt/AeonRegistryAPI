@@ -66,7 +66,7 @@ app.UseMiddleware<BlockIdentityEndpoints>();
 
 // Map API endpoints for login, logout, etc. using ASP.NET identity
 var authRouteGroup = app.MapGroup("/api/auth")
-    .WithTags("Admin");
+    .WithTags("Admin - Public");
 authRouteGroup.MapIdentityApi<ApplicationUser>();
 
 // Map custom endpoints

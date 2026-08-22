@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text;
 using AeonRegistryAPI.Endpoints.CustomIdentity.Models;
+using AeonRegistryAPI.Filters;
 using AeonRegistryAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
@@ -14,55 +15,61 @@ public static class CustomIdentityEndpoints
 {
     public static IEndpointRouteBuilder MapCustomIdentityEndpoints(this IEndpointRouteBuilder route)
     {
-        var group = route.MapGroup("/api/auth")
-            .WithTags("Admin");
+        var publicGroup = route.MapGroup("/api/public/auth")
+            .WithTags("Admin - Public")
+            .AddEndpointFilter<ExceptionHandlingFilter>();
 
-        group.MapPost("/register-admin", RegisterUser)
+        publicGroup.MapPost("/register-admin", RegisterUser)
             .WithName("RegisterAdmin")
-            .WithSummary("Registers a new user")
-            .WithDescription("Registers a user; must have admin role")
+            .WithSummary("Register a new user")
+            .WithDescription("""
+                             Creates a new user with a temporary password and sends an welcome email to the 
+                             user with a password change link. The user is assigned the role of 'Researcher'.
+                             """)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
 
-        group.MapPost("/reset-password", ResetPassword)
+        publicGroup.MapPost("/reset-password", ResetPassword)
             .WithName("ResetPassword")
-            .WithSummary("Resets a user's password")
-            .WithDescription("Resets a user's password")
+            .WithSummary("Reset an existing user's password")
+            .WithDescription("Resets the user's password.")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
         
-        group.MapPost("/forgot-password", ForgotPassword)
+        publicGroup.MapPost("/forgot-password", ForgotPassword)
             .WithName("ForgotPassword")
-            .WithSummary("Initiates the flow for when a user forgets their password")
-            .WithDescription("The user provides an email to request a password reset token")
+            .WithSummary("Initiate the workflow for when a user forgets their password")
+            .WithDescription("Sends an email to the user with a password reset link.")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
 
-        group.MapGet("/manage-profile", GetProfileInfo)
-            .WithName("GetProfileInfo")
-            .WithSummary("Gets the current user's profile")
-            .WithDescription("Gets the current's user profile")
-            .Produces<UserProfileResponse>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status404NotFound)
+        var privateGroup = route.MapGroup("/api/private/auth")
+            .WithTags("Admin - Private")
+            .AddEndpointFilter<ExceptionHandlingFilter>()
             .RequireAuthorization();
-        
-        group.MapPut("/manage-profile", UpdateProfileInfo)
+
+        privateGroup.MapGet("/manage-profile", GetProfileInfo)
+            .WithName("GetProfileInfo")
+            .WithSummary("Retrieve the current user's profile")
+            .WithDescription("Retrieves the current's user profile.")
+            .Produces<UserProfileResponse>()
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status404NotFound);
+
+        privateGroup.MapPut("/manage-profile", UpdateProfileInfo)
             .WithName("UpdateProfileInfo")
-            .WithSummary("Updates the current user's profile")
-            .WithDescription("Updates the current's user profile")
+            .WithSummary("Update the current user's profile")
+            .WithDescription("Updates the current's user profile.")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status404NotFound)
-            .RequireAuthorization();
-        
-        group.MapGet("/manage/users", GetAllUsers)
+            .Produces(StatusCodes.Status404NotFound);
+
+        privateGroup.MapGet("/manage/users", GetAllUsers)
             .WithName("GetAllUsers")
-            .WithSummary("Gets all users")
-            .WithDescription("Gets all users")
-            .Produces<IEnumerable<UserProfileResponse>>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .RequireAuthorization();
+            .WithSummary("List all users")
+            .WithDescription("Lists all users.")
+            .Produces<IEnumerable<UserProfileResponse>>()
+            .Produces(StatusCodes.Status401Unauthorized);
         
         return route;
     }

@@ -26,8 +26,16 @@ If the directory does not exist on your machine, remove the `<UserSecretsId>` el
 ### Scaffolding the database
 Run `dotnet ef database update` to apply the migrations to the new (or existing) database.
 
+## Seed data
+On startup a seed utility will run migrations to ensure the DB is current, then check if the database is empty. If it's empty example data will be populated (see `Data/SeedData/`).
+
+## Running the project
+Run `dotnet restore` then `dotnet run`.
+
 ## User management
 This project leverages ASP.NET Identity to handle authentication and authorization. The user information is stored as part of the local Postgres DB. This API makes use some of built-in endpoints to interact with accounts. (Note: To demonstrate how to extend the Identity functionality -- in this case we add two new properties for first and last name -- the existing ones are hidden so that we can provide new ones with slightly different names.)
+
+Note: The seed data populates several sample users if you don't want to create one yourself.
 
 ### Logging in
 From the Swagger interface, use `/api/auth/login`. A successful login will return a bearer token that you can use in the Swagger interface to authenticate with.
@@ -43,15 +51,53 @@ From the Swagger interface, use `/api/auth/register-admin` to create a user. As 
 ### Forgot password
 From the Swagger interface, use `/api/auth/forgot-password` to initiate the password reset flow. The password reset token is written to the console, which can then be used with `/api/auth/reset-password`.
 
-## Seed data
-On startup a seed utility will run migrations to ensure the DB is current, then check if the database is empty. If it's empty example data will be populated (see `Data/SeedData/`).
-
-## Running the project
-Run `dotnet restore` then `dotnet run`.
-
 ## Entity Framework reminders
 - To create a migration: `dotnet ef migrations add {NameOfMigrationHere}`.
 - To run migrations: `dotnet ef database update`.
 
-## Other project notes
-The API is incomplete; the Udemy course covered the basic mechanics of getting data in and out of the system. However, there are certain entities (such as Catalog Records) that aren't meaningfully connected.
+## Product notes and future ideas
+The API is incomplete. The Udemy course covered the basic mechanics of getting data in and out of the system. However, there are certain entities (such as Catalog Records) that don't have endpoints.
+
+The seed data defines user roles for role-based access control (RBAC); however, the course never made use of those.
+
+Something I would have done differently at the beginning of the project was have the database (and admin interface) hosted in a container rather than requiring those tools to be explicitly installed locally as the course required.
+
+## Project structure and conventions
+
+## API conventions
+Endpoints are grouped by entity and access. Although the routes to public and private endpoints differ, this grouping makes the Swagger interface easier to scan. Another advantage for implementation is that certain attributes can be applied at the group level rather than having to remember to apply to each endpoint (e.g., `.RequiresAuthorization()`, `.WithTags()`).
+
+### Groups
+Define with `.WithTags()`.
+
+- Use plural nouns.
+- If there are public and private endpoints for a particular entity, create two groups with the appropriate suffix (e.g., "Sites - Public" and "Sites - Private").
+
+### Summary
+Define with `.WithSummary()`.
+
+- One short phrase, no trailing period.
+- Start with an imperative verb, sentence case (capitalize only the first word and proper nouns).
+  - GET (single): "Retrieve"
+  - GET (collection): "List"
+  - POST (create): "Create"
+  - POST (non-CRUD action): The domain verb itself (e.g., "Cancel", "Archive")
+  - PUT: "Replace"
+  - DELETE: "Delete"
+- Keep it under 80 characters. It should name the single primary action only.
+
+### Description
+Define with `.WithDescription()`.
+
+- One or more complete sentences, each ending in a period.
+- Present tense, describing what the API does: "Retrieves a customer record by its unique identifier."
+- Cover, in order, only what's relevant:
+  - What the endpoint does (can restate/expand the Summary in full-sentence form)
+  - Notable behavior or side effects (e.g., "Also marks the invitation as expired.")
+  - Constraints worth calling out (idempotency, rate limits, eventual consistency)
+  - Pointers to related endpoints, if genuinely useful
+
+### Components without documentation
+For brevity the properties for request and response DTOs are not documented. For requests that have multiple properties, Swagger already generates the schema to show constraints like max length or if certain values are required.
+
+The endpoints are descriptive enough that the response codes aren't further documented (e.g., 401, 404).

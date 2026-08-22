@@ -13,8 +13,8 @@ public static class HomeEndpoints
         // The route is appended to the group -- /api/home/welcome.
         homeGroup.MapGet("/welcome", GetWelcomeMessage)
             .WithName("GetWelcomeMessage")
-            .WithSummary("Welcome Message")
-            .WithDescription("Displays a welcome message");
+            .WithSummary("Retrieve a welcome message")
+            .WithDescription("Retrieves a welcome message to confirm the site is working.");
             
         return route;
     }
