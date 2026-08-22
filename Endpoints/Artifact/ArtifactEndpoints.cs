@@ -16,15 +16,15 @@ public static class ArtifactEndpoints
 
         publicGroup.MapGet("", GetPublicArtifactsAsync)
             .WithName("GetPublicArtifacts")
-            .WithSummary("Get all public artifacts")
-            .WithDescription("Get all public artifacts")
+            .WithSummary("List all artifacts")
+            .WithDescription("Lists all public information about artifacts.")
             .Produces<List<PublicArtifactResponse>>()
             .Produces<NotFound>();
         
         publicGroup.MapGet("{id:int}", GetPublicArtifactByIdAsync)
             .WithName("GetPublicArtifactById")
-            .WithSummary("Get an artifact by ID (public info only)")
-            .WithDescription("Get public info about a specific artifact")
+            .WithSummary("Retrieve an artifact")
+            .WithDescription("Retrieves public information about an artifact.")
             .Produces<List<PublicArtifactResponse>>()
             .Produces<NotFound>();
         
@@ -35,24 +35,24 @@ public static class ArtifactEndpoints
         
         privateGroup.MapGet("", GetPrivateArtifactsAsync)
             .WithName("GetPrivateArtifacts")
-            .WithSummary("Get all artifacts (public and private info)")
-            .WithDescription("Get all artifacts with full info")
+            .WithSummary("List all artifacts")
+            .WithDescription("Lists all artifacts.")
             .Produces<List<PrivateArtifactResponse>>()
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
         
         privateGroup.MapGet("{id:int}", GetPrivateArtifactByIdAsync)
             .WithName("GetPrivateArtifactById")
-            .WithSummary("Get an artifact by ID (public and private info)")
-            .WithDescription("Get all info about a specific artifact")
+            .WithSummary("Retrieve an artifact")
+            .WithDescription("Retrieves an artifact.")
             .Produces<PrivateArtifactResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
         
         privateGroup.MapPost("", CreatePrivateArtifactAsync)
             .WithName("CreatePrivateArtifact")
-            .WithSummary("Create a new artifact")
-            .WithDescription("Create a new artifact")
+            .WithSummary("Create an artifact")
+            .WithDescription("Creates a new artifact.")
             .ProducesValidationProblem()
             .Produces<PrivateArtifactResponse>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status401Unauthorized)
@@ -61,7 +61,7 @@ public static class ArtifactEndpoints
         privateGroup.MapPut("", UpdatePrivateArtifactAsync)
             .WithName("UpdatePrivateArtifact")
             .WithSummary("Update an artifact")
-            .WithDescription("Update an artifact")
+            .WithDescription("Updates an artifact.")
             .ProducesValidationProblem()
             .Produces<PrivateArtifactResponse>(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status401Unauthorized)
@@ -70,7 +70,7 @@ public static class ArtifactEndpoints
         privateGroup.MapDelete("{id:int}", DeletePrivateArtifactAsync)
             .WithName("DeletePrivateArtifact")
             .WithSummary("Delete an artifact")
-            .WithDescription("Delete an artifact")
+            .WithDescription("Deletes an artifact.")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
