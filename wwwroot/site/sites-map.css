@@ -1,0 +1,388 @@
+﻿/* ==========================================
+   Aeon Registry UI Styles
+   Organized for teaching clarity
+   1. Theme Variables
+   2. Global Layout & Typography
+   3. Shared Components (Navbar, Buttons, Links)
+   4. Page Layouts (Map, Auth)
+   ========================================== */
+
+
+/* ===== 1. THEME VARIABLES ===== */
+:root {
+    --aeon-cyan: #00e0ff; /* Primary accent glow */
+    --aeon-cyan-dim: #00b8cc; /* Muted hover tone */
+    --aeon-bg: #0d0d0d; /* Background */
+    --aeon-light: #e0e0e0; /* Light text */
+    --aeon-border: #222; /* Borders & dividers */
+}
+
+
+/* ===== 2. GLOBAL LAYOUT & TYPOGRAPHY ===== */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--aeon-bg);
+    color: var(--aeon-light);
+    font-family: "source-code-pro", monospace;
+}
+
+
+/* ===== 3. SHARED COMPONENTS ===== */
+
+/* --- Navbar --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--aeon-bg);
+    border-bottom: 2px solid var(--aeon-cyan);
+    box-shadow: 0 0 12px rgba(0, 224, 255, 0.25);
+}
+
+.nav-logo {
+    height: 36px;
+    filter: drop-shadow(0 0 6px var(--aeon-cyan));
+}
+
+/* Navbar mobile button */
+.navbar .btn-outline-info {
+    border-color: var(--aeon-cyan);
+    color: var(--aeon-cyan);
+}
+
+    .navbar .btn-outline-info:hover,
+    .navbar .btn-outline-info:focus {
+        background-color: var(--aeon-cyan);
+        color: var(--aeon-bg);
+        box-shadow: 0 0 8px rgba(0, 224, 255, 0.4);
+    }
+
+/* Navbar right-aligned link */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.nav-login-link {
+    color: var(--aeon-cyan);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.15s ease-in-out;
+}
+
+    .nav-login-link:hover {
+        color: var(--aeon-bg);
+        background-color: var(--aeon-cyan);
+        box-shadow: 0 0 10px rgba(0, 224, 255, 0.45);
+    }
+
+
+/* --- Buttons & Links --- */
+.btn-outline-info {
+    border-color: var(--aeon-cyan);
+    color: var(--aeon-cyan);
+}
+
+    .btn-outline-info:hover {
+        background-color: var(--aeon-cyan);
+        color: var(--aeon-bg);
+    }
+
+.text-link {
+    color: var(--aeon-cyan);
+    text-decoration: none;
+}
+
+    .text-link:hover {
+        color: var(--aeon-cyan-dim);
+        text-decoration: underline;
+    }
+
+
+/* ===== 4. PAGE LAYOUTS ===== */
+
+/* --- Map Page --- */
+#map {
+    height: calc(100dvh - 56px);
+    width: 100%;
+    background-color: #0a0a0a;
+    filter: brightness(0.9) contrast(1.05);
+    margin-top: 56px;
+}
+
+.sidebar {
+    background-color: #121212;
+    color: var(--aeon-light);
+    border-right: 1px solid var(--aeon-border);
+    overflow-y: auto;
+    font-size: 0.92rem;
+    margin-top: 56px;
+}
+
+.sidebar-title {
+    color: var(--aeon-cyan);
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+}
+
+.list-group-item {
+    background-color: #1a1a1a;
+    color: #ccc;
+    border: 1px solid #222;
+    cursor: pointer;
+}
+
+    .list-group-item:hover {
+        background-color: #202020;
+        color: var(--aeon-light);
+    }
+
+    .list-group-item.active {
+        background-color: var(--aeon-cyan) !important;
+        border-color: var(--aeon-cyan) !important;
+        color: var(--aeon-bg) !important;
+    }
+
+
+/* --- Leaflet Popups & Attribution --- */
+.leaflet-container {
+    background: var(--aeon-bg);
+}
+
+.leaflet-popup-content-wrapper {
+    background-color: #1a1a1a;
+    color: var(--aeon-light);
+    border: 1px solid var(--aeon-cyan);
+    box-shadow: 0 0 12px rgba(0, 224, 255, 0.6);
+    font-family: "source-code-pro", monospace;
+}
+
+.leaflet-popup-tip {
+    background-color: #1a1a1a;
+    border: 1px solid var(--aeon-cyan);
+}
+
+.leaflet-popup-content h6 {
+    color: var(--aeon-cyan);
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.leaflet-popup-content p {
+    margin: 0.25rem 0;
+    color: var(--aeon-light);
+    line-height: 1.4;
+}
+
+.leaflet-container .leaflet-control-attribution {
+    background: rgba(15, 15, 15, 0.9) !important;
+    color: #bbb !important;
+    border: 1px solid #222 !important;
+    border-radius: 4px !important;
+    font-size: 0.75rem !important;
+    padding: 2px 6px !important;
+    box-shadow: 0 0 4px rgba(0, 224, 255, 0.15);
+}
+
+    .leaflet-container .leaflet-control-attribution a {
+        color: var(--aeon-cyan) !important;
+        text-decoration: none !important;
+    }
+
+        .leaflet-container .leaflet-control-attribution a:hover {
+            color: var(--aeon-cyan-dim) !important;
+            text-decoration: underline !important;
+        }
+
+
+/* --- Artifact List Cards --- */
+.section-heading {
+    color: var(--aeon-cyan);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.75rem;
+    margin-bottom: 0.4rem;
+    border-bottom: 1px solid var(--aeon-border);
+    padding-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.artifact-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.details-image {
+    flex-shrink: 0;
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    border: 1px solid var(--aeon-cyan);
+    border-radius: 4px;
+    box-shadow: 0 0 4px rgba(0, 224, 255, 0.3);
+    background-color: var(--aeon-bg);
+}
+
+.artifact-text {
+    flex: 1;
+    color: var(--aeon-light);
+    line-height: 1.25;
+    overflow: hidden;
+}
+
+    .artifact-text h6 {
+        color: var(--aeon-cyan);
+        font-weight: 600;
+        margin: 0 0 0.15rem 0;
+        font-size: 0.9rem;
+    }
+
+    .artifact-text p {
+        margin: 0;
+        font-size: 0.82rem;
+    }
+
+        .artifact-text p + p {
+            margin-top: 0.2rem;
+        }
+
+/* Responsive Artifact Layout */
+@media (max-width: 768px) {
+    .artifact-card {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: left;
+        margin-bottom: 0.6rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 1px solid #222;
+    }
+
+    .details-image {
+        width: 100%;
+        height: 250px;
+        object-fit: contain;
+        border: 1px solid var(--aeon-cyan);
+        background-color: var(--aeon-bg);
+    }
+
+    .artifact-text {
+        padding: 0 0.25rem;
+    }
+}
+
+
+/* --- Auth Pages (Login / Forgot / Reset) --- */
+.auth-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: var(--aeon-bg);
+    padding-top: 56px; /* offset navbar height */
+    padding-left: 1rem; /* 👈 add gutters */
+    padding-right: 1rem; /* 👈 add gutters */
+}
+
+.auth-card {
+    background-color: rgba(18, 18, 18, 0.95);
+    border: 1px solid var(--aeon-cyan);
+    box-shadow: 0 0 15px rgba(0, 224, 255, 0.25);
+    border-radius: 8px;
+    max-width: 420px;
+    width: 100%;
+    padding: 2rem;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Add this responsive tweak */
+@media (max-width: 576px) {
+    .auth-card {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+}
+
+    .auth-card h4 {
+        color: var(--aeon-cyan);
+        text-align: center;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .auth-card .form-control,
+    .auth-card .btn {
+        font-family: "source-code-pro", monospace;
+    }
+
+    .auth-card .btn-info {
+        background-color: var(--aeon-cyan);
+        border-color: var(--aeon-cyan);
+        color: var(--aeon-bg);
+        font-weight: 600;
+    }
+
+        .auth-card .btn-info:hover {
+            background-color: var(--aeon-cyan-dim);
+            border-color: var(--aeon-cyan-dim);
+        }
+
+/* --- Dark Modal (Details Popup) --- */
+.dark-modal {
+    background-color: #121212;
+    color: var(--aeon-light);
+    border: 1px solid var(--aeon-cyan);
+    box-shadow: 0 0 15px rgba(0, 224, 255, 0.3);
+}
+
+    .dark-modal .modal-header {
+        border-bottom: 1px solid var(--aeon-cyan);
+    }
+
+    .dark-modal .modal-title {
+        color: var(--aeon-cyan);
+        font-family: "source-code-pro", monospace;
+    }
+
+    .dark-modal .modal-body {
+        font-family: "source-code-pro", monospace;
+        background-color: #0d0d0d;
+        color: var(--aeon-light);
+        white-space: normal;
+    }
+
+    /* Close button */
+    .dark-modal .btn-close {
+        filter: invert(100%) hue-rotate(180deg);
+        opacity: 0.8;
+    }
+
+        .dark-modal .btn-close:hover {
+            opacity: 1;
+        }
+
+/* Optional scrollable area tweaks */
+.modal-dialog-scrollable .modal-content {
+    background-color: #121212;
+    border: 1px solid var(--aeon-cyan);
+}
+
+#result {
+    font-size: 0.9rem;
+}

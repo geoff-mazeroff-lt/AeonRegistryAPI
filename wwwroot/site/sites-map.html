@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Covert Dig Sites Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Adobe Typekit Fonts -->
+    <link rel="stylesheet" href="https://use.typekit.net/tjk2iyn.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="sites-map.css">
+</head>
+<body class="dark-mode">
+
+    <!-- =============================
+         Top Navigation
+         ============================= -->
+    <nav class="navbar navbar-dark">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-nowrap">
+            <!-- Mobile Sites Button -->
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline-info btn-sm me-2 d-md-none"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasSites"
+                        aria-controls="offcanvasSites"                            
+                        data-bs-placement="bottom"
+                        title="View Site List">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="navbar-brand">
+                    <img src="/images/AeonRegistryLogo.png" alt="Logo" class="nav-logo me-2">
+                </div>
+            </div>           
+        </div>
+    </nav>
+
+    <!-- =============================
+         Layout (Desktop)
+         ============================= -->
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <!-- Sidebar (Desktop only) -->
+            <div class="col-md-2 p-0 d-none d-md-block sidebar">
+                <div class="sidebar-header text-center p-3">
+                    <h5 class="sidebar-title">Covert Sites</h5>
+                    <button class="btn btn-outline-info btn-sm mt-2 w-100" onclick="resetMapView()">
+                        <i class="bi bi-globe"></i> Show All Sites
+                    </button>
+                </div>
+                <ul id="siteList" class="list-group list-group-flush"></ul>
+            </div>
+
+            <!-- Map -->
+            <div class="col-12 col-md-10 p-0">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =============================
+         Offcanvas Sidebar (Mobile)
+         ============================= -->
+    <div class="offcanvas offcanvas-start sidebar text-bg-dark"
+         tabindex="-1"
+         id="offcanvasSites"
+         aria-labelledby="offcanvasSitesLabel">
+        <div class="offcanvas-header d-flex justify-content-between align-items-center">
+            <h5 class="sidebar-title mb-0" id="offcanvasSitesLabel">Covert Sites</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body p-0">
+            <div class="p-2 border-bottom">
+                <button class="btn btn-outline-info btn-sm w-100"
+                        onclick="resetMapView(); bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasSites')).hide();">
+                    <i class="bi bi-globe"></i> Show All Sites
+                </button>
+            </div>
+            <ul id="siteListOffcanvas" class="list-group list-group-flush"></ul>
+        </div>
+    </div>
+
+
+    <!-- =============================
+          Details Modal
+          ============================= -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content dark-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalTitle">Details</h5>
+                    <button type="button" class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="detailsModalBody">
+                    <!-- Content dynamically injected from sites-map.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =============================
+         Template for Artifact Card
+         ============================= -->
+    <template id="artifact-template">
+        <div class="artifact-card">
+            <img class="details-image" alt="">
+            <div class="artifact-text">
+                <h6></h6>
+                <p class="catalog"></p>
+                <p class="description"></p>
+            </div>
+        </div>
+    </template>
+
+    <!-- =============================
+         Scripts
+         ============================= -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+            integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
+            crossorigin="anonymous"></script>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Custom JS -->
+    <script src="sites-map.js"></script>
+
+</body>
+</html>
