@@ -64,6 +64,7 @@ public static class SiteEndpoints
             .WithSummary("Create a new site")
             .WithDescription("Create a new site and return its details")
             .Accepts<CreateSiteRequest>("application/json")
+            .ProducesValidationProblem()
             .Produces<PrivateSiteResponse>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status401Unauthorized)
             .ProducesValidationProblem();
@@ -73,6 +74,7 @@ public static class SiteEndpoints
             .WithSummary("Update an existing site")
             .WithDescription("Update an existing site and return its updated details")
             .Accepts<UpdateSiteRequest>("application/json")
+            .ProducesValidationProblem()
             .Produces<NoContent>()
             .Produces<NotFound>()
             .Produces(StatusCodes.Status401Unauthorized)
