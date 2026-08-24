@@ -14,7 +14,7 @@ In the pgAdmin app, create a new database called `AeonRegistry` using default se
 ### Connection string
 The `.csproj` file makes use of `<UserSecretsId>` to manage the DB connection string. The existing GUID there points to `%APPDATA%\Microsoft\UserSecrets\<guid>\secrets.json`. To set the value locally run `dotnet user-secrets set "ConnectionStrings:DbConnection" "Host=localhost;Port=5432;Database=AeonRegistry;User Id=postgres;Password=PutYourPasswordHere"`. Adjust the `Port` and `Password` values to match your local DB values.
 
-If the directory does not exist on your machine, remove the `<UserSecretsId>` element from the `.csproj` file, create the `secrets.json` file at the project root as shown below, then run `dotnet user-secrets init` to add the appropriate element to your project file.
+If the directory does not exist on your machine, remove the `<UserSecretsId>` element from the `.csproj` file, create the `secrets.json` file in the project directory (`src/AeonRegistryAPI/`) as shown below, then run `dotnet user-secrets init --project src/AeonRegistryAPI` to add the appropriate element to your project file.
 ```
 {
   "ConnectionStrings": {
@@ -24,13 +24,16 @@ If the directory does not exist on your machine, remove the `<UserSecretsId>` el
 ```
 
 ### Scaffolding the database
-Run `dotnet ef database update` to apply the migrations to the new (or existing) database.
+Run `dotnet ef database update --project src/AeonRegistryAPI` to apply the migrations to the new (or existing) database.
 
 ## Seed data
-On startup a seed utility will run migrations to ensure the DB is current, then check if the database is empty. If it's empty example data will be populated (see `Data/SeedData/`).
+On startup a seed utility will run migrations to ensure the DB is current, then check if the database is empty. If it's empty example data will be populated (see `src/AeonRegistryAPI/Data/SeedData/`).
 
 ## Running the project
-Run `dotnet restore` then `dotnet run`.
+Run `dotnet restore` then `dotnet run --project src/AeonRegistryAPI --launch-profile https`. The `--project` argument is needed because the web project lives under `src/` rather than at the repository root; alternatively, `cd src/AeonRegistryAPI` first and run the bare commands.
+
+Visit the Swagger API: https://localhost:7132/swagger
+Visit the web interface: https://localhost:7132/site/sites-map.html
 
 ## User management
 This project leverages ASP.NET Identity to handle authentication and authorization. The user information is stored as part of the local Postgres DB. This API makes use some of built-in endpoints to interact with accounts. (Note: To demonstrate how to extend the Identity functionality -- in this case we add two new properties for first and last name -- the existing ones are hidden so that we can provide new ones with slightly different names.)
@@ -51,8 +54,9 @@ From the Swagger interface, use `/api/auth/register-admin` to create a user. As 
 From the Swagger interface, use `/api/auth/forgot-password` to initiate the password reset flow. The password reset token is written to the console, which can then be used with `/api/auth/reset-password`.
 
 ## Entity Framework reminders
-- To create a migration: `dotnet ef migrations add {NameOfMigrationHere}`.
-- To run migrations: `dotnet ef database update`.
+These assume you're at the repository root; drop `--project src/AeonRegistryAPI` if you've changed into the project directory.
+- To create a migration: `dotnet ef migrations add {NameOfMigrationHere} --project src/AeonRegistryAPI`.
+- To run migrations: `dotnet ef database update --project src/AeonRegistryAPI`.
 
 ## Product notes and future ideas
 The API is incomplete. The Udemy course covered the basic mechanics of getting data in and out of the system. However, there are certain entities (such as Catalog Records) that don't have endpoints.
@@ -62,6 +66,12 @@ The seed data defines user roles for role-based access control (RBAC); however, 
 Something I would have done differently at the beginning of the project was have the database (and admin interface) hosted in a container rather than requiring those tools to be explicitly installed locally as the course required.
 
 ## Project structure and conventions
+The repository root holds solution-level files only; the web project lives in `src/AeonRegistryAPI/`.
+- `AeonRegistryAPI.slnx`: Solution file
+- `Plans/`: Design and implementation plans for work on this repo
+- `src/AeonRegistryAPI/`: The web project (all paths below are relative to it)
+
+Within the project:
 - `Data`: Infrastructure for the database (in this case, Entity Framework (EF) Core)
   - Mock data
   - Utilities for managing data outside of EF

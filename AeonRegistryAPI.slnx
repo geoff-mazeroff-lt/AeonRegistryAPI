@@ -1,3 +1,11 @@
 <Solution>
-  <Project Path="AeonRegistryAPI.csproj" />
+  <!-- Only long-lived, frequently-opened root files are pinned here; .slnx has no
+       glob support, so anything listed must be maintained by hand. Use Folder View
+       (Visual Studio) or the Files view (Rider) to browse the rest of the tree. -->
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/AeonRegistryAPI/AeonRegistryAPI.csproj" />
+  </Folder>
 </Solution>
