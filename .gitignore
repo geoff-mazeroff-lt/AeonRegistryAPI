@@ -6,3 +6,6 @@ riderModule.iml
 /.idea
 *.DotSettings.user
 secrets.json
+
+# Test output
+TestResults/

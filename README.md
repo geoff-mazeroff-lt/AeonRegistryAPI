@@ -68,8 +68,11 @@ Something I would have done differently at the beginning of the project was have
 ## Project structure and conventions
 The repository root holds solution-level files only; the web project lives in `src/AeonRegistryAPI/`.
 - `AeonRegistryAPI.slnx`: Solution file
+- `Directory.Packages.props`: Central package management -- package versions for every project are declared here, so the `.csproj` files list package names only
+- `global.json`: Selects Microsoft.Testing.Platform as the `dotnet test` runner, which xUnit v3 requires on the .NET 10 SDK
 - `Plans/`: Design and implementation plans for work on this repo
 - `src/AeonRegistryAPI/`: The web project (all paths below are relative to it)
+- `tests/`: Test projects (`AeonRegistryAPI.UnitTests` and `AeonRegistryAPI.IntegrationTests`)
 
 Within the project:
 - `Data`: Infrastructure for the database (in this case, Entity Framework (EF) Core)

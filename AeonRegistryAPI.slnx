@@ -4,8 +4,13 @@
        (Visual Studio) or the Files view (Rider) to browse the rest of the tree. -->
   <Folder Name="/Solution Items/">
     <File Path="README.md" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/AeonRegistryAPI/AeonRegistryAPI.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AeonRegistryAPI.UnitTests/AeonRegistryAPI.UnitTests.csproj" />
+    <Project Path="tests/AeonRegistryAPI.IntegrationTests/AeonRegistryAPI.IntegrationTests.csproj" />
   </Folder>
 </Solution>

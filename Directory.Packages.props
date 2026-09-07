@@ -1,0 +1,48 @@
+<Project>
+
+    <!-- Central Package Management: every PackageReference in src/ and tests/ omits its
+         Version attribute and picks it up from the PackageVersion entries below, so there
+         is exactly one place to bump a dependency.
+
+         This matters more than usual here: the app uses the Npgsql EF provider and the
+         integration tests use the SQLite provider. If those two drift apart in version,
+         EF fails at runtime with errors that point nowhere near the real cause. Keeping
+         them on the same line of this file makes the coupling visible. -->
+
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+
+    <!-- Application packages -->
+    <ItemGroup>
+        <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.11" />
+        <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.11" />
+        <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.11" />
+        <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+        <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+    </ItemGroup>
+
+    <!-- Test packages shared by both test projects.
+
+         xUnit v3 runs on Microsoft.Testing.Platform, not VSTest. On the .NET 10 SDK the
+         VSTest entry point is gone, so `dotnet test` only works because global.json opts
+         in with "test": { "runner": "Microsoft.Testing.Platform" }. That also means the
+         VSTest-era packages a pre-.NET 10 template would add - Microsoft.NET.Test.Sdk,
+         xunit.runner.visualstudio, coverlet.collector - are deliberately absent;
+         Microsoft.Testing.Extensions.CodeCoverage is the MTP equivalent of coverlet and
+         is what the `dotnet test` coverage switch needs. -->
+    <ItemGroup>
+        <PackageVersion Include="xunit.v3" Version="4.0.0" />
+        <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.11.0" />
+        <PackageVersion Include="NSubstitute" Version="6.2.0" />
+        <PackageVersion Include="Shouldly" Version="4.3.0" />
+    </ItemGroup>
+
+    <!-- Integration/API/contract test packages -->
+    <ItemGroup>
+        <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.11" />
+        <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.11" />
+        <PackageVersion Include="Verify.XunitV3" Version="31.28.0" />
+    </ItemGroup>
+
+</Project>

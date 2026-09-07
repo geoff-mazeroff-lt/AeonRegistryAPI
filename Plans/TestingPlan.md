@@ -43,6 +43,7 @@ Target layout:
 ```
 AeonRegistryAPI.slnx
 Directory.Packages.props            (new — central package management, applies to src/ and tests/)
+global.json                         (new — selects the Microsoft.Testing.Platform test runner)
 README.md
 .gitignore
 Plans/
@@ -274,6 +275,8 @@ Two edits. First, the mechanical one from milestone 1: re-root every path in **P
 
 Second, add a **Testing** section following the file's existing conventions style: the four-level table above, the naming convention (`Method_Scenario_ExpectedResult`), how to run each level, why service tests need a database here, why endpoint handlers aren't unit tested, and how to accept an OpenAPI snapshot change. This is what makes the repo usable as a teaching artifact rather than just a tested repo.
 
+The run instructions must cover the **test-runner opt-in**, which was discovered during milestone 2 and is not obvious from anything else in the repo. xUnit v3 runs on Microsoft.Testing.Platform, and the .NET 10 SDK removed the VSTest entry point, so `dotnet test` works only because the root `global.json` contains `"test": { "runner": "Microsoft.Testing.Platform" }`. Without it every test project fails with *"Testing with VSTest target is no longer supported"* — an error that names neither `global.json` nor the runner. Neither `dotnet.config` nor `-p:TestingPlatformDotnetTestSupport=true` is an accepted substitute on this SDK. The same paragraph is the right place to document coverage, since the MTP switch is `dotnet test --coverage` (backed by `Microsoft.Testing.Extensions.CodeCoverage`) rather than the VSTest `--collect:"XPlat Code Coverage"` that section 7 still names.
+
 ---
 
 ## Milestones
@@ -290,7 +293,7 @@ Each is independently verifiable — stop and run the suite after every one.
 8. `AeonApiFactory` + auth helper + `SiteEndpointsTests` for existing-correct behavior. Verify: green.
 9. Red tests for bugs 1, 2, 5, then fix the routes. Verify: green.
 10. `OpenApiContractTests` + committed snapshot (generated *after* the route fixes so the baseline is the corrected surface).
-11. CI workflow + README Testing section. Verify: workflow green on a pushed branch.
+11. CI workflow + README Testing section. Include the `global.json` test-runner opt-in and the MTP coverage switch (see section 8). Verify: workflow green on a pushed branch.
 
 ## Risks and gotchas to call out in code comments
 
