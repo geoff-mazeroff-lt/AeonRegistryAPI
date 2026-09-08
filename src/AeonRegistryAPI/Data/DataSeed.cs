@@ -16,7 +16,10 @@ public class DataSeed
 
     public static async Task ManageDataAsync(IServiceProvider svcProvider)
     {
-        await using var dbContextSvc = svcProvider.GetRequiredService<ApplicationDbContext>();
+        // Resolved, not owned: the DbContext is scoped, so the scope that created it disposes it.
+        // Disposing it here would tear down a service the rest of that scope may still be using.
+        var dbContextSvc = svcProvider.GetRequiredService<ApplicationDbContext>();
+        var environment = svcProvider.GetRequiredService<IWebHostEnvironment>();
 
         // Apply any pending migrations
         await dbContextSvc.Database.MigrateAsync();
@@ -26,23 +29,26 @@ public class DataSeed
         await SeedUsersAsync(svcProvider);
 
         // Call seeders in order
-        await SeedSitesAsync(dbContextSvc);
-        await SeedArtifactsAsync(dbContextSvc);
-        await SeedArtifactMediaFilesAsync(dbContextSvc);
-        await SeedCatalogRecordsAsync(svcProvider);
+        await SeedSitesAsync(dbContextSvc, environment);
+        await SeedArtifactsAsync(dbContextSvc, environment);
+        await SeedArtifactMediaFilesAsync(dbContextSvc, environment);
+        await SeedCatalogRecordsAsync(svcProvider, environment);
         await ResetPostgresSequencesAsync(dbContextSvc);
 
     }
 
     #region seed data
 
-    public static string GetSeedPath(params string[] paths)
+    // ContentRootPath, not Directory.GetCurrentDirectory(): the working directory only happens to be
+    // the project folder under `dotnet run`. Publish the app, or launch it from anywhere else, and
+    // the seed files silently resolve to a path that doesn't exist.
+    public static string GetSeedPath(IWebHostEnvironment environment, params string[] paths)
     {
-        var basePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "SeedData");
+        var basePath = Path.Combine(environment.ContentRootPath, "Data", "SeedData");
         return Path.Combine(basePath, Path.Combine(paths));
     }
 
-    private static async Task SeedSitesAsync(ApplicationDbContext context)
+    private static async Task SeedSitesAsync(ApplicationDbContext context, IWebHostEnvironment environment)
     {
         if (await context.Sites.AnyAsync())
         {
@@ -50,7 +56,7 @@ public class DataSeed
             return;
         }
         
-        var filePath = GetSeedPath("sites.json");
+        var filePath = GetSeedPath(environment, "sites.json");
 
         if (!File.Exists(filePath))
         {
@@ -70,7 +76,7 @@ public class DataSeed
     }
 
     // Seed base artifacts
-    private static async Task SeedArtifactsAsync(ApplicationDbContext context)
+    private static async Task SeedArtifactsAsync(ApplicationDbContext context, IWebHostEnvironment environment)
     {
         if (await context.Artifacts.AnyAsync()) 
         {
@@ -78,7 +84,7 @@ public class DataSeed
             return;
         }
        
-        var filePath = GetSeedPath("artifacts.json");
+        var filePath = GetSeedPath(environment, "artifacts.json");
 
         if (!File.Exists(filePath))
         {
@@ -110,7 +116,7 @@ public class DataSeed
     }
 
     // Seed sample catalog records
-    public static async Task SeedCatalogRecordsAsync(IServiceProvider svcProvider)
+    public static async Task SeedCatalogRecordsAsync(IServiceProvider svcProvider, IWebHostEnvironment environment)
     {
         var dbContext = svcProvider.GetRequiredService<ApplicationDbContext>();
         var userManager = svcProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -135,7 +141,7 @@ public class DataSeed
 
         foreach (var fileName in files)
         {
-            var filePath = GetSeedPath(fileName);
+            var filePath = GetSeedPath(environment, fileName);
 
             if (!File.Exists(filePath))
             {
@@ -213,7 +219,7 @@ public class DataSeed
     }
     
     // Seed demo media (images)
-    public static async Task SeedArtifactMediaFilesAsync(ApplicationDbContext context)
+    public static async Task SeedArtifactMediaFilesAsync(ApplicationDbContext context, IWebHostEnvironment environment)
     {
         if (await context.ArtifactMediaFiles.AnyAsync())
         {
@@ -221,7 +227,7 @@ public class DataSeed
             return;
         }
 
-        var imagesPath = GetSeedPath("Images");
+        var imagesPath = GetSeedPath(environment, "Images");
         if (!Directory.Exists(imagesPath))
         {
             Console.WriteLine("No image folder found: " + imagesPath);
