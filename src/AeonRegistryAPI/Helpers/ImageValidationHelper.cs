@@ -24,7 +24,7 @@ public static class ImageValidationHelper
         if (file.Length > MaxFileSize)
             throw new InvalidOperationException("File cannot exceed 5 MB.");
         
-        if (!AllowedContentTypes.Contains(file.ContentType.ToLowerInvariant()))
+        if (file.ContentType is null || !AllowedContentTypes.Contains(file.ContentType.ToLowerInvariant()))
             throw new InvalidOperationException($"Only image files (JPEG, PNG, GIF, WEBP) are allowed.");
         
         var extension = Path.GetExtension(file.FileName);

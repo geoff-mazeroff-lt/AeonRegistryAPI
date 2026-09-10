@@ -15,7 +15,7 @@ public class ExceptionHandlingFilter : IEndpointFilter
             return Results.Problem(
                 detail: environment.IsDevelopment() ? ex.ToString() : null,
                 statusCode: StatusCodes.Status500InternalServerError,
-                title: "An unexpected error occured"); 
+                title: "An unexpected error occurred"); 
         }
     }
 }
