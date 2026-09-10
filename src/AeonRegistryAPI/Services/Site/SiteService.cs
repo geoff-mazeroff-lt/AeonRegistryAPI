@@ -5,6 +5,9 @@ namespace AeonRegistryAPI.Services.Site;
 
 public class SiteService(ApplicationDbContext db) : ISiteService
 {
+    private const string ArchivedSuffix = " [ARCHIVED]";
+
+
     public async Task<IEnumerable<PublicSiteResponse>> GetAllPublicSitesAsync(CancellationToken cancellationToken = default)
     {
         return await db.Sites
@@ -122,6 +125,7 @@ public class SiteService(ApplicationDbContext db) : ISiteService
             return false;
         }
 
+        existingSite.Name = request.Name;
         existingSite.Location = request.Location;
         existingSite.Coordinates = request.Coordinates;
         existingSite.Latitude = request.Latitude;
@@ -157,9 +161,14 @@ public class SiteService(ApplicationDbContext db) : ISiteService
             return false;
         }
 
-        existingSite.Name += " [ARCHIVED]";
+        if (existingSite.Name is not null && existingSite.Name.EndsWith(ArchivedSuffix, StringComparison.Ordinal))
+        {
+            return true;
+        }
+
+        existingSite.Name += ArchivedSuffix;
         await db.SaveChangesAsync(cancellationToken);
-        
+
         return true;
     }
 }

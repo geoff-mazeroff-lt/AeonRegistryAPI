@@ -258,6 +258,7 @@ public class SiteServiceTests : IAsyncLifetime
         var siteId = await SeedSiteAsync(new SiteBuilder());
 
         var request = new SiteBuilder()
+            .WithName("Ashfall Terrace (re-surveyed)")
             .WithLocation("Southern Shelf, Sector 3")
             .WithCoordinates("12.0000° S, 45.0000° E")
             .WithPosition(-12.0, 45.0)
@@ -272,6 +273,7 @@ public class SiteServiceTests : IAsyncLifetime
 
         await using var assertContext = _database.CreateContext();
         var stored = await assertContext.Sites.SingleAsync(s => s.Id == siteId, TestContext.Current.CancellationToken);
+        stored.Name.ShouldBe("Ashfall Terrace (re-surveyed)");
         stored.Location.ShouldBe("Southern Shelf, Sector 3");
         stored.Coordinates.ShouldBe("12.0000° S, 45.0000° E");
         stored.Latitude.ShouldBe(-12.0);
@@ -279,12 +281,34 @@ public class SiteServiceTests : IAsyncLifetime
         stored.Description.ShouldBe("Re-surveyed after the 3rd expedition.");
         stored.PublicNarrative.ShouldBe("Open to visitors from spring.");
         stored.AeonNarrative.ShouldBe("Restricted: revised resonance profile.");
+    }
 
-        // Name is conspicuously missing from this list. That is not an oversight and it is not
-        // correct behavior either: UpdateSiteAsync never assigns it, even though
-        // UpdateSiteRequest.Name is [Required] - so a rename silently does nothing. The failing
-        // test that pins that down, and the fix, are the next milestone. Covering the fields
-        // that do work first keeps the red test about one thing.
+    /// <summary>
+    /// Bug 3, pinned on its own: <c>UpdateSiteAsync</c> assigned every field except
+    /// <c>Name</c>, so a rename returned <c>true</c> and changed nothing.
+    /// </summary>
+    /// <remarks>
+    /// The field-by-field test above catches this too, now that Name is in its assertion list,
+    /// but a bug this specific gets a test named after it. When it regresses, the failure says
+    /// what broke instead of "one of eight fields is wrong". This also shows why asserting on
+    /// every field of a hand-written assignment block matters: the omission is invisible when
+    /// reading the method - nothing is wrong with the lines that <i>are</i> there.
+    /// </remarks>
+    [Fact]
+    public async Task UpdateSiteAsync_WhenNameChanges_PersistsTheNewName()
+    {
+        var siteId = await SeedSiteAsync(new SiteBuilder().WithName("Ashfall Terrace"));
+        var request = new SiteBuilder().WithName("Ashfall Terrace (re-surveyed)").BuildUpdateRequest();
+
+        await using var actContext = _database.CreateContext();
+        var updated = await new SiteService(actContext)
+            .UpdateSiteAsync(siteId, request, TestContext.Current.CancellationToken);
+
+        updated.ShouldBeTrue();
+
+        await using var assertContext = _database.CreateContext();
+        var stored = await assertContext.Sites.SingleAsync(s => s.Id == siteId, TestContext.Current.CancellationToken);
+        stored.Name.ShouldBe("Ashfall Terrace (re-surveyed)");
     }
 
     // ---------------------------------------------------------------------------------------
@@ -362,8 +386,46 @@ public class SiteServiceTests : IAsyncLifetime
         await using var assertContext = _database.CreateContext();
         var stored = await assertContext.Sites.SingleAsync(s => s.Id == siteId, TestContext.Current.CancellationToken);
         stored.Name.ShouldBe($"Ashfall Terrace{ArchivedSuffix}");
+    }
 
-        // Archiving twice appends the suffix twice, which is a real bug - see the next
-        // milestone. This test covers only the first call, which does behave.
+    [Fact]
+    public async Task ArchiveSiteAsync_WhenSiteIsAlreadyArchived_LeavesTheNameUnchanged()
+    {
+        var siteId = await SeedSiteAsync(new SiteBuilder().WithName("Ashfall Terrace"));
+
+        await using var firstContext = _database.CreateContext();
+        await new SiteService(firstContext).ArchiveSiteAsync(siteId, TestContext.Current.CancellationToken);
+
+        // A second context for the second call, because that is what a second HTTP request
+        // gets: a fresh scoped DbContext that has to load the entity from the database.
+        await using var secondContext = _database.CreateContext();
+        var archivedAgain = await new SiteService(secondContext)
+            .ArchiveSiteAsync(siteId, TestContext.Current.CancellationToken);
+
+        // True, not false: the caller asked for the site to be archived and it is archived.
+        // Reporting failure for an already-satisfied request would push every caller into
+        // checking first, which is the race this method should be absorbing.
+        archivedAgain.ShouldBeTrue();
+
+        await using var assertContext = _database.CreateContext();
+        var stored = await assertContext.Sites.SingleAsync(s => s.Id == siteId, TestContext.Current.CancellationToken);
+        stored.Name.ShouldBe($"Ashfall Terrace{ArchivedSuffix}");
+    }
+
+    [Fact]
+    public async Task ArchiveSiteAsync_WhenCalledRepeatedly_KeepsTheNameWithinItsColumnLength()
+    {
+        const int nameMaxLength = 200;
+        var siteId = await SeedSiteAsync(new SiteBuilder().WithName(new string('A', 180)));
+
+        for (var i = 0; i < 5; i++)
+        {
+            await using var actContext = _database.CreateContext();
+            await new SiteService(actContext).ArchiveSiteAsync(siteId, TestContext.Current.CancellationToken);
+        }
+
+        await using var assertContext = _database.CreateContext();
+        var stored = await assertContext.Sites.SingleAsync(s => s.Id == siteId, TestContext.Current.CancellationToken);
+        stored.Name!.Length.ShouldBeLessThanOrEqualTo(nameMaxLength);
     }
 }
