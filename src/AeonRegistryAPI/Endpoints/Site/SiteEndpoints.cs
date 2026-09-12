@@ -62,7 +62,7 @@ public static class SiteEndpoints
             .Produces(StatusCodes.Status401Unauthorized)
             .ProducesValidationProblem();
 
-        privateGroup.MapPut("", UpdatePrivateSiteAsync)
+        privateGroup.MapPut("{id:int}", UpdatePrivateSiteAsync)
             .WithName("UpdatePrivateSite")
             .WithSummary("Update a site")
             .WithDescription("Updates an existing site.")
@@ -71,7 +71,7 @@ public static class SiteEndpoints
             .Produces<NotFound>()
             .Produces(StatusCodes.Status401Unauthorized);
 
-        privateGroup.MapDelete("", DeletePrivateSiteAsync)
+        privateGroup.MapDelete("{id:int}", DeletePrivateSiteAsync)
             .WithName("DeletePrivateSite")
             .WithSummary("Delete a site")
             .WithDescription("Deletes a site.")

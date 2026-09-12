@@ -289,4 +289,102 @@ public class SiteEndpointsTests(AeonApiFactory factory) : IClassFixture<AeonApiF
         // which is the right order for not leaking which ids are real.
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
+
+    // ---------------------------------------------------------------------------------------
+    // PUT /api/private/sites/{id}
+    // ---------------------------------------------------------------------------------------
+
+    [Fact]
+    public async Task UpdatePrivateSite_WhenSiteExists_ReturnsNoContentAndUpdatesTheSite()
+    {
+        var siteId = await SeedSiteAsync(new SiteBuilder().WithName("Ashfall Terrace"));
+        var client = await factory.CreateAuthenticatedClientAsync();
+        var request = new SiteBuilder().WithName("Ashfall Terrace (Lower)").BuildUpdateRequest();
+
+        var response = await client.PutAsJsonAsync(
+            $"/api/private/sites/{siteId}", request, TestContext.Current.CancellationToken);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+
+        await using var context = factory.CreateDbContext();
+        var stored = await context.Sites.SingleAsync(s => s.Id == siteId, TestContext.Current.CancellationToken);
+        stored.Name.ShouldBe("Ashfall Terrace (Lower)");
+    }
+
+    [Fact]
+    public async Task UpdatePrivateSite_WhenSiteDoesNotExist_ReturnsNotFound()
+    {
+        var client = await factory.CreateAuthenticatedClientAsync();
+
+        var response = await client.PutAsJsonAsync(
+            "/api/private/sites/404",
+            new SiteBuilder().BuildUpdateRequest(),
+            TestContext.Current.CancellationToken);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task UpdatePrivateSite_WhenIdIsOnlyInTheQueryString_ReturnsMethodNotAllowed()
+    {
+        var siteId = await SeedSiteAsync(new SiteBuilder().WithName("Ashfall Terrace"));
+        var client = await factory.CreateAuthenticatedClientAsync();
+        var request = new SiteBuilder().WithName("Renamed via a query string").BuildUpdateRequest();
+
+        var response = await client.PutAsJsonAsync(
+            $"/api/private/sites?id={siteId}", request, TestContext.Current.CancellationToken);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.MethodNotAllowed);
+
+        await using var context = factory.CreateDbContext();
+        var stored = await context.Sites.SingleAsync(s => s.Id == siteId, TestContext.Current.CancellationToken);
+        stored.Name.ShouldBe("Ashfall Terrace");
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // DELETE /api/private/sites/{id}
+    // ---------------------------------------------------------------------------------------
+
+    [Fact]
+    public async Task DeletePrivateSite_WhenSiteExists_ReturnsNoContentAndRemovesTheSite()
+    {
+        var siteId = await SeedSiteAsync(new SiteBuilder().WithName("Ashfall Terrace"));
+        var client = await factory.CreateAuthenticatedClientAsync();
+
+        var response = await client.DeleteAsync(
+            $"/api/private/sites/{siteId}", TestContext.Current.CancellationToken);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+
+        await using var context = factory.CreateDbContext();
+        (await context.Sites.AnyAsync(TestContext.Current.CancellationToken)).ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task DeletePrivateSite_WhenSiteDoesNotExist_ReturnsNotFound()
+    {
+        var client = await factory.CreateAuthenticatedClientAsync();
+
+        var response = await client.DeleteAsync(
+            "/api/private/sites/404", TestContext.Current.CancellationToken);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task DeletePrivateSite_WhenIdIsOnlyInTheQueryString_ReturnsMethodNotAllowed()
+    {
+        var siteId = await SeedSiteAsync(new SiteBuilder());
+        var client = await factory.CreateAuthenticatedClientAsync();
+
+        var response = await client.DeleteAsync(
+            $"/api/private/sites?id={siteId}", TestContext.Current.CancellationToken);
+
+        // A deletion that answers to a URL nobody documented is the worst version of this bug,
+        // so the retirement of that URL is asserted on the data as well as the status code.
+        response.StatusCode.ShouldBe(HttpStatusCode.MethodNotAllowed);
+
+        await using var context = factory.CreateDbContext();
+        (await context.Sites.AnyAsync(TestContext.Current.CancellationToken)).ShouldBeTrue();
+    }
 }

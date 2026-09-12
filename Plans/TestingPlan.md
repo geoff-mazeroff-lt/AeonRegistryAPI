@@ -237,7 +237,8 @@ Endpoint handlers are **not** unit tested: they're `private static` methods, and
 - `POST /api/private/sites` valid → 201 with a `Location` header pointing at the created resource; **follow the header** and assert the GET succeeds, because a hand-built URL string is easy to get subtly wrong and impossible to spot by reading.
 - `POST /api/private/sites` unauthenticated → 401, *and nothing was persisted*.
 - `POST /api/private/sites/{id}/archive/` as a non-Archivist → 403 with the name unchanged; as an Archivist → 204 with the suffix applied; as an Archivist against a missing id → 404. *(the auth example)*
-- **Red:** `PUT /api/private/sites/{id}` and `DELETE /api/private/sites/{id}` currently 404/405, because the routes are `MapPut("")` / `MapDelete("")` and `id` binds from the query string instead.
+- **Red:** `PUT /api/private/sites/{id}` and `DELETE /api/private/sites/{id}` currently 404, because the routes are `MapPut("")` / `MapDelete("")` and `id` binds from the query string instead. Each fix gets a *pair* of tests — the RESTful URL now works, and the old query-string URL no longer does. The second half matters: leaving both live would be two URLs for one resource, which survives indefinitely because both "work". Once `{id:int}` is in place the retired form returns **405**, not 404, because `/api/private/sites` is still a real route for `GET` and `POST` — the matcher finds the pattern and rejects only the verb.
+- The same two route bugs on Artifacts (bug 5) get a thin version of the same treatment in `Api/ArtifactEndpointsTests` and `Api/ArtifactMediaFileEndpointsTests`, even though Artifacts are otherwise out of the deep slice. `POST /api/private/artifacts/media-file/{artifactId}` is the one worth reading: it is the only multipart endpoint, and it is where the route-vs-query distinction is genuinely easy to miss, since minimal APIs bind simple types beside an `IFormFile` from the route or query and never from the form. Its retired URL returns 404 rather than 405, because that group had only the one endpoint and moving it left the bare path with no routes at all.
 
 **Contract** (`Contract/OpenApiContractTests`) — one test:
 
@@ -254,11 +255,11 @@ Each is: failing test → production fix → confirm green.
 
 | # | Bug | Fix | Status |
 |---|---|---|---|
-| 1 | `PUT /api/private/sites` has no `{id:int}`; `id` binds from query string | `MapPut("{id:int}")` — **breaking API change**. Verified no callers in `src/AeonRegistryAPI/AeonRegistryAPI.http` or `src/AeonRegistryAPI/wwwroot/site/sites-map.js`; the snapshot test will flag it, which is the contract test doing its job. | milestone 9 |
-| 2 | Same on `MapDelete("")` for sites | `MapDelete("{id:int}")` | milestone 9 |
+| 1 | `PUT /api/private/sites` has no `{id:int}`; `id` binds from query string | `MapPut("{id:int}")` — **breaking API change**. Verified no callers in `src/AeonRegistryAPI/wwwroot/site/sites-map.js` (public GETs only); there is no `.http` file in the repo. | **fixed (milestone 9)** |
+| 2 | Same on `MapDelete("")` for sites | `MapDelete("{id:int}")` | **fixed (milestone 9)** |
 | 3 | `SiteService.UpdateSiteAsync` never assigns `Name` | Add `existingSite.Name = request.Name;` | **fixed (milestone 7)** |
 | 4 | `ArchiveSiteAsync` is not idempotent; can overflow `MaxLength(200)` | Return early (still `true`) if the name already ends in the suffix | **fixed (milestone 7)** — suffix extracted to a `const`, ordinal `EndsWith`, null-guarded. Returns `true` rather than `false` because `false` is the service's "not found" signal and the endpoint maps it to 404. Known limitation: a site a human names `"Foo [ARCHIVED]"` will no-op on archive; the design without that hole is a separate `IsArchived` column, which is a schema change and out of scope here. |
-| 5 | Same query-string route bug on `ArtifactEndpoints.MapPut("")` and `ArtifactMediaFileEndpoints.MapPost("")` | Route-only change; cheap and keeps conventions consistent even though Artifacts are outside the deep slice | milestone 9 |
+| 5 | Same query-string route bug on `ArtifactEndpoints.MapPut("")` and `ArtifactMediaFileEndpoints.MapPost("")` | Route-only change; cheap and keeps conventions consistent even though Artifacts are outside the deep slice. `MapPut("{id:int}")`, matching the `MapDelete` beside it that was already correct, and `MapPost("{artifactId:int}")` — `isPrimary` stays a query parameter, since it is a flag about the upload rather than part of the resource identity. | **fixed (milestone 9)** |
 
 Two documentation fixes on `SiteEndpoints` belong with milestone 9, since they change the published surface and must land before the snapshot baseline in milestone 10: the archive endpoint was missing `.Produces(StatusCodes.Status403Forbidden)` despite being the one endpoint in the app with a role requirement, and its `.WithDescription()` did not state idempotency, which the README's own Description convention calls for. Both are done.
 
@@ -289,7 +290,7 @@ The run instructions must cover the **test-runner opt-in**, which was discovered
 
 Each is independently verifiable — stop and run the suite after every one.
 
-**Status: milestones 1–8 are complete.** The suite is green at 103 tests: 70 in `AeonRegistryAPI.UnitTests` and 33 in `AeonRegistryAPI.IntegrationTests` (20 service-level, 13 API-level). Counts include theory cases, which is why the unit number is larger than the number of test methods. Next up is milestone 9. Sections above have been revised in place where the implementation taught us something the plan had wrong — see section 2 (packages), section 4 (namespaces), section 5 (where the `AeonNarrative` assertion belongs), section 6 (bug status), section 7 (coverage switch), and section 8 (what the README already covers).
+**Status: milestones 1–9 are complete.** The suite is green at 116 tests: 70 in `AeonRegistryAPI.UnitTests` and 46 in `AeonRegistryAPI.IntegrationTests` (20 service-level, 26 API-level). Counts include theory cases, which is why the unit number is larger than the number of test methods. Next up is milestone 10 — and its snapshot now baselines the corrected route surface, which was the whole reason milestone 9 came first. Sections above have been revised in place where the implementation taught us something the plan had wrong — see section 2 (packages), section 4 (namespaces), section 5 (where the `AeonNarrative` assertion belongs), section 6 (bug status), section 7 (coverage switch), and section 8 (what the README already covers).
 
 1. ✅ **Move the web project to `src/AeonRegistryAPI/`** — `git mv` the tracked files, update the `.slnx` path, re-root the README paths and `dotnet run` / `dotnet ef` invocations. No test projects yet, so this milestone stands alone and is easy to review. Verify: `dotnet build`, `dotnet run --project src/AeonRegistryAPI` boots, Swagger renders, `/site/sites-map.html` still loads, `dotnet ef migrations list --project src/AeonRegistryAPI` works, and `git log --follow src/AeonRegistryAPI/Program.cs` shows the pre-move history.
 2. ✅ `Directory.Packages.props`, both test projects, `.slnx` update. Verify: `dotnet test` runs and reports zero tests.
@@ -299,7 +300,7 @@ Each is independently verifiable — stop and run the suite after every one.
 6. ✅ `SqliteDatabaseFixture` + `SiteBuilder`, and `SiteServiceTests` for the already-correct methods. Verify: green.
 7. ✅ Red tests for bugs 3 and 4, then fix `SiteService`. Verify: green.
 8. ✅ `AeonApiFactory` + auth helper + `SiteEndpointsTests` for existing-correct behavior. Verify: green.
-9. Red tests for bugs 1, 2, 5, then fix the routes. Verify: green.
+9. ✅ Red tests for bugs 1, 2, 5, then fix the routes. Verify: green.
 10. `OpenApiContractTests` + committed snapshot (generated *after* the route fixes so the baseline is the corrected surface).
 11. CI workflow + README Testing section. Include the `global.json` test-runner opt-in and the MTP coverage switch (see section 8). Verify: workflow green on a pushed branch.
 

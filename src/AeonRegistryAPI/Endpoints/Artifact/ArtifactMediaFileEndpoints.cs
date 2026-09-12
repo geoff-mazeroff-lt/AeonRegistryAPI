@@ -24,7 +24,7 @@ public static class ArtifactMediaFileEndpoints
             .RequireAuthorization()
             .AddEndpointFilter<ExceptionHandlingFilter>();
 
-        privateGroup.MapPost("", CreateArtifactMediaFile)
+        privateGroup.MapPost("{artifactId:int}", CreateArtifactMediaFile)
             .WithName("CreateArtifactMediaFile")
             .WithSummary("Create an artifact media file")
             .WithDescription("""

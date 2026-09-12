@@ -57,7 +57,7 @@ public static class ArtifactEndpoints
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces<NotFound>();
         
-        privateGroup.MapPut("", UpdatePrivateArtifactAsync)
+        privateGroup.MapPut("{id:int}", UpdatePrivateArtifactAsync)
             .WithName("UpdatePrivateArtifact")
             .WithSummary("Update an artifact")
             .WithDescription("Updates an artifact.")
