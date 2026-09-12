@@ -90,10 +90,15 @@ public static class SiteEndpoints
         privateGroup.MapPost("{id:int}/archive/", ArchivePrivateSiteAsync)
             .WithName("ArchiveSite")
             .WithSummary("Mark a site as archived")
-            .WithDescription("Modifies the site's name to designate it as archived.")
+            .WithDescription("""
+                             Modifies the site's name to designate it as archived. Requires the
+                             'Archivist' role. Idempotent: archiving a site that is already
+                             archived succeeds without changing the name again.
+                             """)
             .RequireAuthorization(policy => policy.RequireRole("Archivist"))
             .Produces<NoContent>()
             .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
             .Produces<NotFound>();
         
         return route;

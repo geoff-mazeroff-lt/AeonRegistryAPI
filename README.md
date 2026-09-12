@@ -35,6 +35,13 @@ Run `dotnet restore` then `dotnet run --project src/AeonRegistryAPI --launch-pro
 Visit the Swagger API: https://localhost:7132/swagger
 Visit the web interface: https://localhost:7132/site/sites-map.html
 
+## Running the tests
+Run `dotnet test` from the repository root for everything, or point it at a single project for a faster loop: `dotnet test tests/AeonRegistryAPI.UnitTests`. For coverage, use `dotnet test --coverage`.
+
+No database and no Docker are needed. The unit tests touch neither; the integration tests use SQLite in-memory, and the API tests boot the app in-process with SQLite swapped in for Postgres, so `dotnet test` never contacts the local Postgres instance.
+
+**The `global.json` at the repository root is required to run the tests.** xUnit v3 runs on Microsoft.Testing.Platform, and the .NET 10 SDK removed the VSTest entry point, so `dotnet test` only works because `global.json` contains `"test": { "runner": "Microsoft.Testing.Platform" }`. Without it every test project fails with *"Testing with VSTest target is no longer supported"* -- an error that mentions neither `global.json` nor the runner. Neither `dotnet.config` nor `-p:TestingPlatformDotnetTestSupport=true` is an accepted substitute on this SDK. This is also why `Microsoft.NET.Test.Sdk`, `xunit.runner.visualstudio`, and `coverlet.collector` are deliberately absent from `Directory.Packages.props`: they are VSTest-era packages, and `Microsoft.Testing.Extensions.CodeCoverage` is what backs the `--coverage` switch instead.
+
 ## User management
 This project leverages ASP.NET Identity to handle authentication and authorization. The user information is stored as part of the local Postgres DB. This API makes use some of built-in endpoints to interact with accounts. (Note: To demonstrate how to extend the Identity functionality -- in this case we add two new properties for first and last name -- the existing ones are hidden so that we can provide new ones with slightly different names.)
 
@@ -72,7 +79,10 @@ The repository root holds solution-level files only; the web project lives in `s
 - `global.json`: Selects Microsoft.Testing.Platform as the `dotnet test` runner, which xUnit v3 requires on the .NET 10 SDK
 - `Plans/`: Design and implementation plans for work on this repo
 - `src/AeonRegistryAPI/`: The web project (all paths below are relative to it)
-- `tests/`: Test projects (`AeonRegistryAPI.UnitTests` and `AeonRegistryAPI.IntegrationTests`)
+- `tests/`: Test projects
+  - `AeonRegistryAPI.UnitTests`: Single classes, no database and no host, mirroring the project's own directory names (`Filters/`, `Helpers/`, `Middleware/`)
+  - `AeonRegistryAPI.IntegrationTests`: Everything that needs a database or a running host. `Services/` holds service + EF tests over SQLite in-memory, `Api/` holds host-level tests over `HttpClient`, and `Infrastructure/` and `TestData/` hold the shared fixtures and test data builders
+  - Test method names follow `Method_Scenario_ExpectedResult`
 
 Within the project:
 - `Data`: Infrastructure for the database (in this case, Entity Framework (EF) Core)
