@@ -30,15 +30,14 @@ Run `dotnet ef database update --project src/AeonRegistryAPI` to apply the migra
 On startup a seed utility will run migrations to ensure the DB is current, then check if the database is empty. If it's empty example data will be populated (see `src/AeonRegistryAPI/Data/SeedData/`).
 
 ## Running the project
-Run `dotnet restore` then `dotnet run --project src/AeonRegistryAPI --launch-profile https`. The `--project` argument is needed because the web project lives under `src/` rather than at the repository root; alternatively, `cd src/AeonRegistryAPI` first and run the bare commands.
-
-Visit the Swagger API: https://localhost:7132/swagger
-Visit the web interface: https://localhost:7132/site/sites-map.html
+From the root run `dotnet restore` then `dotnet run --project src/AeonRegistryAPI --launch-profile https`.
+- Visit the Swagger API: https://localhost:7132/swagger
+- Visit the web interface: https://localhost:7132/site/sites-map.html
 
 ## Running the tests
 Run `dotnet test` from the repository root for everything, or point it at a single project for a faster loop: `dotnet test tests/AeonRegistryAPI.UnitTests`. For coverage, use `dotnet test --coverage`.
 
-No database and no Docker are needed. The unit tests touch neither; the integration tests use SQLite in-memory, and the API tests boot the app in-process with SQLite swapped in for Postgres, so `dotnet test` never contacts the local Postgres instance.
+The integration tests use SQLite in-memory, and the API tests boot the app in-process with SQLite swapped in for Postgres, so `dotnet test` never contacts the local Postgres instance.
 
 **The `global.json` at the repository root is required to run the tests.** xUnit v3 runs on Microsoft.Testing.Platform, and the .NET 10 SDK removed the VSTest entry point, so `dotnet test` only works because `global.json` contains `"test": { "runner": "Microsoft.Testing.Platform" }`. Without it every test project fails with *"Testing with VSTest target is no longer supported"* -- an error that mentions neither `global.json` nor the runner. Neither `dotnet.config` nor `-p:TestingPlatformDotnetTestSupport=true` is an accepted substitute on this SDK. This is also why `Microsoft.NET.Test.Sdk`, `xunit.runner.visualstudio`, and `coverlet.collector` are deliberately absent from `Directory.Packages.props`: they are VSTest-era packages, and `Microsoft.Testing.Extensions.CodeCoverage` is what backs the `--coverage` switch instead.
 
@@ -53,9 +52,9 @@ From the Swagger interface, use `/api/auth/login`. A successful login will retur
 ### Registering a user and resetting a password
 From the Swagger interface, use `/api/auth/register-admin` to create a user. As long as the user doesn't already exist, it will be created with a temporary password that's hard-coded (see `CustomIdentityEndpoints.cs`). That user will also be assigned the role of `Researcher` (if said role exists). Because there's no real email service (it just writes to the console), the reset password code will be written to the console. Use the reset code written to the console to call `/api/auth/reset-password` to reset the password.
 
-**Warnings:** There are some elements from the Udemy video I typed verbatim that are inconsistent. Maybe these will be addressed in future segments.
+**Notes:** There are some elements from the Udemy video I typed verbatim that are inconsistent.
 - Why is the endpoint called `register-admin`? Is it to register a new administrator, or is it only supposed to be called by an administrator?
-- Registering a user writes the content of a would-be email to the new user, and that content contains a password reset link. Perhaps the presenter included this to show how you would start setting it up, but the link **does nothing**.
+- Registering a user writes the content of a would-be email to the new user, and that content contains a password reset link. Perhaps the presenter included this to show how you would start setting it up, but the actual link **does nothing**.
 
 ### Forgot password
 From the Swagger interface, use `/api/auth/forgot-password` to initiate the password reset flow. The password reset token is written to the console, which can then be used with `/api/auth/reset-password`.
@@ -70,11 +69,11 @@ The API is incomplete. The Udemy course covered the basic mechanics of getting d
 
 The seed data defines user roles for role-based access control (RBAC); however, the course never made use of those. I created an example endpoint (`/api/private/sites/{id}/archive`) that demonstrates how this works.
 
-Something I would have done differently at the beginning of the project was have the database (and admin interface) hosted in a container rather than requiring those tools to be explicitly installed locally as the course required.
+Something I would have done differently at the beginning of the project was having the database (and admin interface) hosted in a container rather than requiring those tools to be explicitly installed locally as the course required.
 
 ## Project structure and conventions
 The repository root holds solution-level files only; the web project lives in `src/AeonRegistryAPI/`.
-- `AeonRegistryAPI.slnx`: Solution file
+- `AeonRegistryAPI.slnx`: Solution file -- parent of the API project and two testing projects
 - `Directory.Packages.props`: Central package management -- package versions for every project are declared here, so the `.csproj` files list package names only
 - `global.json`: Selects Microsoft.Testing.Platform as the `dotnet test` runner, which xUnit v3 requires on the .NET 10 SDK
 - `Plans/`: Design and implementation plans for work on this repo
@@ -84,7 +83,7 @@ The repository root holds solution-level files only; the web project lives in `s
   - `AeonRegistryAPI.IntegrationTests`: Everything that needs a database or a running host. `Services/` holds service + EF tests over SQLite in-memory, `Api/` holds host-level tests over `HttpClient`, and `Infrastructure/` and `TestData/` hold the shared fixtures and test data builders
   - Test method names follow `Method_Scenario_ExpectedResult`
 
-Within the project:
+Within the API project:
 - `Data`: Infrastructure for the database (in this case, Entity Framework (EF) Core)
   - Mock data
   - Utilities for managing data outside of EF

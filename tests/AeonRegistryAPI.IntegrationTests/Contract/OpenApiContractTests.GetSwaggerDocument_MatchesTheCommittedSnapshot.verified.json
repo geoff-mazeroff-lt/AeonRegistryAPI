@@ -1,0 +1,1715 @@
+﻿{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Aeon Registry API",
+    "description": "\r\n<img src=\"/images/AeonRegistryLogoBLK.png\" height=\"120\" />\r\n## Aeon Research Division\r\n\r\nInternal API for managing recovered artifacts and research data.\r\nProvides secure access for field researchers and analysts.\r\n\r\n### Key Features\r\n- Site and artifact catalog\r\n- Research record submissions\r\n- Secure media storage\r\n- User role management\r\n\r\n[Launch Public Test Site](/site/sites-map.html)\r\n",
+    "contact": {
+      "name": "Aeon Registry Team",
+      "url": "https://github.com/geoff-mazeroff-lt/AeonRegistryAPI"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/private/auth/manage-profile": {
+      "get": {
+        "tags": [
+          "Admin - Private"
+        ],
+        "summary": "Retrieve the current user's profile",
+        "description": "Retrieves the current's user profile.",
+        "operationId": "GetProfileInfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Admin - Private"
+        ],
+        "summary": "Update the current user's profile",
+        "description": "Updates the current's user profile.",
+        "operationId": "UpdateProfileInfo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/private/auth/manage/users": {
+      "get": {
+        "tags": [
+          "Admin - Private"
+        ],
+        "summary": "List all users",
+        "description": "Lists all users.",
+        "operationId": "GetAllUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserProfileResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Admin - Public"
+        ],
+        "parameters": [
+          {
+            "name": "useCookies",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "useSessionCookies",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessTokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/auth/register-admin": {
+      "post": {
+        "tags": [
+          "Admin - Public"
+        ],
+        "summary": "Register a new user",
+        "description": "Creates a new user with a temporary password and sends an welcome email to the \r\nuser with a password change link. The user is assigned the role of 'Researcher'.",
+        "operationId": "RegisterAdmin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/public/auth/reset-password": {
+      "post": {
+        "tags": [
+          "Admin - Public"
+        ],
+        "summary": "Reset an existing user's password",
+        "description": "Resets the user's password.",
+        "operationId": "ResetPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/public/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "Admin - Public"
+        ],
+        "summary": "Initiate the workflow for when a user forgets their password",
+        "description": "Sends an email to the user with a password reset link.",
+        "operationId": "ForgotPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/private/artifacts/media-file/{artifactId}": {
+      "post": {
+        "tags": [
+          "Artifact Media - Private"
+        ],
+        "summary": "Create an artifact media file",
+        "description": "Uploads an image file and associates it with an existing artifact.\r\nIf 'isPrimary' is true, the new image will be set as the primary image for\r\nthe artifact and any other previous primary image will be be marked as not primary.",
+        "operationId": "CreateArtifactMediaFile",
+        "parameters": [
+          {
+            "name": "artifactId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "isPrimary",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/public/artifacts/images/{id}": {
+      "get": {
+        "tags": [
+          "Artifact Media - Public"
+        ],
+        "summary": "Retrieve an artifact image",
+        "description": "Retrieves the binary image data for an artifact media record.",
+        "operationId": "GetPublicArtifactImage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileContentHttpResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/artifacts": {
+      "get": {
+        "tags": [
+          "Artifacts - Private"
+        ],
+        "summary": "List all artifacts",
+        "description": "Lists all artifacts.",
+        "operationId": "GetPrivateArtifacts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrivateArtifactResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Artifacts - Private"
+        ],
+        "summary": "Create an artifact",
+        "description": "Creates a new artifact.",
+        "operationId": "CreatePrivateArtifact",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateArtifactRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateArtifactResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/private/artifacts/{id}": {
+      "get": {
+        "tags": [
+          "Artifacts - Private"
+        ],
+        "summary": "Retrieve an artifact",
+        "description": "Retrieves an artifact.",
+        "operationId": "GetPrivateArtifactById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateArtifactResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Artifacts - Private"
+        ],
+        "summary": "Update an artifact",
+        "description": "Updates an artifact.",
+        "operationId": "UpdatePrivateArtifact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateArtifactRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateArtifactResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Artifacts - Private"
+        ],
+        "summary": "Delete an artifact",
+        "description": "Deletes an artifact.",
+        "operationId": "DeletePrivateArtifact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/public/artifacts": {
+      "get": {
+        "tags": [
+          "Artifacts - Public"
+        ],
+        "summary": "List all artifacts",
+        "description": "Lists all public information about artifacts.",
+        "operationId": "GetPublicArtifacts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PublicArtifactResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/public/artifacts/{id}": {
+      "get": {
+        "tags": [
+          "Artifacts - Public"
+        ],
+        "summary": "Retrieve an artifact",
+        "description": "Retrieves public information about an artifact.",
+        "operationId": "GetPublicArtifactById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PublicArtifactResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/home/welcome": {
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "Retrieve a welcome message",
+        "description": "Retrieves a welcome message to confirm the site is working.",
+        "operationId": "GetWelcomeMessage",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WelcomeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private/sites": {
+      "get": {
+        "tags": [
+          "Sites - Private"
+        ],
+        "summary": "List all sites",
+        "description": "Lists all sites.",
+        "operationId": "GetAllPrivateSites",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrivateSiteResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Sites - Private"
+        ],
+        "summary": "Create a site",
+        "description": "Creates a new site.",
+        "operationId": "CreatePrivateSite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSiteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateSiteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/private/sites/{id}": {
+      "get": {
+        "tags": [
+          "Sites - Private"
+        ],
+        "summary": "Retrieve a site",
+        "description": "Retrieves a site.",
+        "operationId": "GetPrivateSiteById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateSiteResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Sites - Private"
+        ],
+        "summary": "Update a site",
+        "description": "Updates an existing site.",
+        "operationId": "UpdatePrivateSite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSiteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Sites - Private"
+        ],
+        "summary": "Delete a site",
+        "description": "Deletes a site.",
+        "operationId": "DeletePrivateSite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/private/sites/{id}/artifacts": {
+      "get": {
+        "tags": [
+          "Sites - Private"
+        ],
+        "summary": "List artifacts for a given site",
+        "description": "Lists artifacts for a site.",
+        "operationId": "GetPrivateArtifactsBySite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrivateArtifactResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/private/sites/{id}/archive": {
+      "post": {
+        "tags": [
+          "Sites - Private"
+        ],
+        "summary": "Mark a site as archived",
+        "description": "Modifies the site's name to designate it as archived. Requires the\r\n'Archivist' role. Idempotent: archiving a site that is already\r\narchived succeeds without changing the name again.",
+        "operationId": "ArchiveSite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/public/sites": {
+      "get": {
+        "tags": [
+          "Sites - Public"
+        ],
+        "summary": "List all sites",
+        "description": "Lists all sites with their public data only.",
+        "operationId": "GetAllPublicSites",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PublicSiteResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/sites/{id}": {
+      "get": {
+        "tags": [
+          "Sites - Public"
+        ],
+        "summary": "Retrieve a site",
+        "description": "Retrieves a site with its public data only.",
+        "operationId": "GetPublicSiteById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicSiteResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/public/sites/{id}/artifacts": {
+      "get": {
+        "tags": [
+          "Sites - Public"
+        ],
+        "summary": "List artifacts for a given site",
+        "description": "Lists artifacts for a site with its public data only.",
+        "operationId": "GetPublicArtifactsBySite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PublicArtifactResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccessTokenResponse": {
+        "required": [
+          "accessToken",
+          "expiresIn",
+          "refreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "tokenType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "accessToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "expiresIn": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "refreshToken": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ByteReadOnlyMemory": {
+        "type": "object",
+        "properties": {
+          "length": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "isEmpty": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "span": {
+            "$ref": "#/components/schemas/ByteReadOnlySpan"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ByteReadOnlySpan": {
+        "type": "object",
+        "properties": {
+          "length": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "isEmpty": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateArtifactRequest": {
+        "required": [
+          "catalogNumber",
+          "dateDiscovered",
+          "name",
+          "siteId",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "catalogNumber": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 2000,
+            "type": "string",
+            "nullable": true
+          },
+          "publicNarrative": {
+            "maxLength": 2000,
+            "type": "string",
+            "nullable": true
+          },
+          "dateDiscovered": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "type": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Allowed values: Weapon, EnergySource, CommunicationDevice, Machine, Tool, Monolith, Device, Unknown"
+          },
+          "siteId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateSiteRequest": {
+        "required": [
+          "location",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "location": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "coordinates": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "description": {
+            "maxLength": 500,
+            "type": "string",
+            "nullable": true
+          },
+          "publicNarrative": {
+            "maxLength": 2000,
+            "type": "string",
+            "nullable": true
+          },
+          "aeonNarrative": {
+            "maxLength": 2000,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EntityTagHeaderValue": {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "$ref": "#/components/schemas/StringSegment"
+          },
+          "isWeak": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileContentHttpResult": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "fileDownloadName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "readOnly": true
+          },
+          "entityTag": {
+            "$ref": "#/components/schemas/EntityTagHeaderValue"
+          },
+          "enableRangeProcessing": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "fileLength": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true,
+            "readOnly": true
+          },
+          "fileContents": {
+            "$ref": "#/components/schemas/ByteReadOnlyMemory"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ForgotPasswordRequest": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HttpValidationProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "LoginRequest": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "twoFactorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "twoFactorRecoveryCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrivateArtifactResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "catalogNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "privateDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateDiscovered": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "primaryImageUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrivateSiteResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "coordinates": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "publicNarrative": {
+            "type": "string",
+            "nullable": true
+          },
+          "aeonNarrative": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicArtifactResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "catalogNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateDiscovered": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "primaryImageUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicSiteResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "coordinates": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "publicNarrative": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RegisterUserRequest": {
+        "required": [
+          "email",
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResetPasswordRequest": {
+        "required": [
+          "email",
+          "newPassword",
+          "resetCode"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "resetCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StringSegment": {
+        "type": "object",
+        "properties": {
+          "buffer": {
+            "type": "string",
+            "nullable": true
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "length": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "hasValue": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateArtifactRequest": {
+        "required": [
+          "catalogNumber",
+          "dateDiscovered",
+          "name",
+          "siteId",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "catalogNumber": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 2000,
+            "type": "string",
+            "nullable": true
+          },
+          "publicNarrative": {
+            "maxLength": 2000,
+            "type": "string",
+            "nullable": true
+          },
+          "dateDiscovered": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "type": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Allowed values: Weapon, EnergySource, CommunicationDevice, Machine, Tool, Monolith, Device, Unknown"
+          },
+          "siteId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateSiteRequest": {
+        "required": [
+          "location",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "location": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "coordinates": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "description": {
+            "maxLength": 500,
+            "type": "string",
+            "nullable": true
+          },
+          "publicNarrative": {
+            "maxLength": 2000,
+            "type": "string",
+            "nullable": true
+          },
+          "aeonNarrative": {
+            "maxLength": 2000,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateUserProfileRequest": {
+        "required": [
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserProfileResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WelcomeResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "string",
+            "nullable": true
+          },
+          "timeOnly": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Enter 'Bearer' [space] and then your token in the text input below.",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Admin - Private"
+    },
+    {
+      "name": "Admin - Public"
+    },
+    {
+      "name": "Artifact Media - Private"
+    },
+    {
+      "name": "Artifact Media - Public"
+    },
+    {
+      "name": "Artifacts - Private"
+    },
+    {
+      "name": "Artifacts - Public"
+    },
+    {
+      "name": "Home"
+    },
+    {
+      "name": "Sites - Private"
+    },
+    {
+      "name": "Sites - Public"
+    }
+  ]
+}

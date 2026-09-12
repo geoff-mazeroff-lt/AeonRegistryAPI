@@ -9,3 +9,6 @@ secrets.json
 
 # Test output
 TestResults/
+
+# Verify snapshot mismatches - the accepted baseline is the committed *.verified.* file
+*.received.*

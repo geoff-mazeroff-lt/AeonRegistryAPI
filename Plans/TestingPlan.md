@@ -247,6 +247,8 @@ var swagger = factory.Services.GetRequiredService<ISwaggerProvider>().GetSwagger
 await Verify(swagger.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0));
 ```
 
+**Revised during milestone 10:** `Microsoft.OpenApi` 2.7.5 (the version Swashbuckle 10.2.3 pulls in) has no `SerializeAsJson` extension — that was a 1.x convenience method. The 2.x equivalent is `document.SerializeAs(OpenApiSpecVersion.OpenApi3_0, new OpenApiJsonWriter(stringWriter))` against a `StringWriter`, then `Verify(stringWriter.ToString(), extension: "json")` (the explicit extension keeps the snapshot as readable JSON instead of Verify's default `.txt`).
+
 No production change needed: `AddCustomSwagger()` is registered unconditionally in the builder — only `UseSwagger()` is Development-gated — so `ISwaggerProvider` is resolvable from the test host. Verify writes `*.received.json` next to `*.verified.json` on mismatch, which gives the team a readable diff and a one-command accept. Commit the `.verified.json` and add `*.received.*` to `.gitignore`. Frame it plainly: this test failing means "you changed the public contract" — it is a prompt to think, not necessarily a bug.
 
 ### 6. Bug-fix sequence
@@ -290,7 +292,7 @@ The run instructions must cover the **test-runner opt-in**, which was discovered
 
 Each is independently verifiable — stop and run the suite after every one.
 
-**Status: milestones 1–9 are complete.** The suite is green at 116 tests: 70 in `AeonRegistryAPI.UnitTests` and 46 in `AeonRegistryAPI.IntegrationTests` (20 service-level, 26 API-level). Counts include theory cases, which is why the unit number is larger than the number of test methods. Next up is milestone 10 — and its snapshot now baselines the corrected route surface, which was the whole reason milestone 9 came first. Sections above have been revised in place where the implementation taught us something the plan had wrong — see section 2 (packages), section 4 (namespaces), section 5 (where the `AeonNarrative` assertion belongs), section 6 (bug status), section 7 (coverage switch), and section 8 (what the README already covers).
+**Status: milestones 1–10 are complete.** The suite is green at 117 tests: 70 in `AeonRegistryAPI.UnitTests` and 47 in `AeonRegistryAPI.IntegrationTests` (20 service-level, 26 API-level, 1 contract). Counts include theory cases, which is why the unit number is larger than the number of test methods. The committed snapshot baselines the corrected route surface from milestone 9, which was the whole reason it came first. Next up is milestone 11. Sections above have been revised in place where the implementation taught us something the plan had wrong — see section 2 (packages), section 4 (namespaces), section 5 (where the `AeonNarrative` assertion belongs and the contract test's serialization API), section 6 (bug status), section 7 (coverage switch), and section 8 (what the README already covers).
 
 1. ✅ **Move the web project to `src/AeonRegistryAPI/`** — `git mv` the tracked files, update the `.slnx` path, re-root the README paths and `dotnet run` / `dotnet ef` invocations. No test projects yet, so this milestone stands alone and is easy to review. Verify: `dotnet build`, `dotnet run --project src/AeonRegistryAPI` boots, Swagger renders, `/site/sites-map.html` still loads, `dotnet ef migrations list --project src/AeonRegistryAPI` works, and `git log --follow src/AeonRegistryAPI/Program.cs` shows the pre-move history.
 2. ✅ `Directory.Packages.props`, both test projects, `.slnx` update. Verify: `dotnet test` runs and reports zero tests.
@@ -301,7 +303,7 @@ Each is independently verifiable — stop and run the suite after every one.
 7. ✅ Red tests for bugs 3 and 4, then fix `SiteService`. Verify: green.
 8. ✅ `AeonApiFactory` + auth helper + `SiteEndpointsTests` for existing-correct behavior. Verify: green.
 9. ✅ Red tests for bugs 1, 2, 5, then fix the routes. Verify: green.
-10. `OpenApiContractTests` + committed snapshot (generated *after* the route fixes so the baseline is the corrected surface).
+10. ✅ `OpenApiContractTests` + committed snapshot (generated *after* the route fixes so the baseline is the corrected surface).
 11. CI workflow + README Testing section. Include the `global.json` test-runner opt-in and the MTP coverage switch (see section 8). Verify: workflow green on a pushed branch.
 
 ## Risks and gotchas to call out in code comments
